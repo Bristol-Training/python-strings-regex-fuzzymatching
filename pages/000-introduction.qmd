@@ -1,0 +1,14 @@
+---
+title: 'Introduction'
+jupyter: python3
+---
+
+
+This short course provides a concise introduction to working with:
+
+1. Python strings and their methods
+2. Regular expressions for pattern matching
+3. Fuzzy matching for approximate string matching
+
+By the end of this 1-hour session, you'll have a practical understanding of these techniques and when to apply them.
+

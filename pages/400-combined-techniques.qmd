@@ -1,0 +1,129 @@
+---
+title: 'Combined Techniques: Putting It All Together'
+jupyter: python3
+---
+
+
+Let's solve a practical problem that combines strings, regex, and fuzzy matching.
+
+**Problem Statement**: We have a dataset of product descriptions that may refer to the same product but with different wording or formatting. We need to:
+1. Clean and normalize the product descriptions
+2. Group similar products together
+
+**Approach**:
+1. **Analyze the data**: Notice what varies between similar product descriptions (order of words, extra information in parentheses, spacing around storage values)
+2. **Normalize the text**: Create a standard format to make comparison easier
+3. **Compare the normalized descriptions**: Use fuzzy matching to find similar products
+4. **Group the results**: Place similar products together
+
+### Step 1: Understand and Normalize the Data
+
+```{python}
+# Scenario: Cleaning and matching product descriptions
+import re
+from fuzzywuzzy import fuzz
+
+# Sample data: Product descriptions
+products = [
+    "Samsung Galaxy S21 5G 128GB Smartphone (Unlocked)",
+    "Samsung Galaxy S21 Ultra 256GB 5G Phone",
+    "Samsung S21 5G 128 GB",
+    "iPhone 13 Pro Max 256GB - Graphite",
+    "Apple iPhone 13 Pro Max (256 GB, Graphite)",
+    "iPhone13 Pro 256GB",
+    "Google Pixel 6 Pro 128GB - Stormy Black",
+    "Pixel 6 Pro (128 GB) Stormy Black color"
+]
+```
+
+```{python}
+def normalize_product_text(text):
+    """Clean and normalize product text for better matching"""
+    # Step 1: Convert to lowercase for case-insensitive comparison
+    text = text.lower()
+    
+    # Step 2: Remove parentheses and their contents (often optional info)
+    text = re.sub(r'\([^)]*\)', '', text)
+    
+    # Step 3: Remove punctuation and standardize spacing
+    text = re.sub(r'[^\w\s]', ' ', text)
+    
+    # Step 4: Standardize storage notation (e.g., 128GB, 128 GB -> 128gb)
+    text = re.sub(r'(\d+)\s*gb', r'\1gb', text)
+    
+    # Step 5: Remove common filler words that don't help identify products
+    text = re.sub(r'\b(smartphone|phone|color|unlocked)\b', '', text)
+    
+    # Step 6: Normalize whitespace for clean comparison
+    text = ' '.join(text.split())
+    
+    return text
+```
+
+```{python}
+# Normalize all products
+normalized_products = [normalize_product_text(p) for p in products]
+
+print("Original vs. Normalized:")
+for original, normalized in zip(products, normalized_products):
+    print(f"Original: {original}")
+    print(f"Normalized: {normalized}\n")
+```
+
+### Step 2: Group Similar Products Using Fuzzy Matching
+
+```{python}
+# Group similar products
+def group_similar_products(products, normalized_products, threshold=80):
+    """Group similar products based on fuzzy matching"""
+    groups = []
+    used_indices = set()
+    
+    # Step 1: Iterate through each product
+    for i, norm_p1 in enumerate(normalized_products):
+        if i in used_indices:
+            continue
+            
+        # Step 2: Start a new group with this product
+        group = [products[i]]
+        used_indices.add(i)
+        
+        # Step 3: Find similar products by comparing with all others
+        for j, norm_p2 in enumerate(normalized_products):
+            if j != i and j not in used_indices:
+                # Step 4: Use token_set_ratio to handle different word orders
+                # and partial matches (this is key for product description matching!)
+                similarity = fuzz.token_set_ratio(norm_p1, norm_p2)
+                
+                # Step 5: If similarity exceeds our threshold, consider it a match
+                if similarity >= threshold:
+                    group.append(products[j])
+                    used_indices.add(j)
+        
+        # Step 6: Add this group to our collection
+        groups.append(group)
+    
+    return groups
+```
+
+```{python}
+# Group similar products
+similar_groups = group_similar_products(products, normalized_products)
+
+print("Similar Product Groups:")
+for i, group in enumerate(similar_groups, 1):
+    print(f"\nGroup {i}:")
+    for product in group:
+        print(f"  - {product}")
+```
+
+### Key Problem-Solving Takeaways:
+
+1. **Break complex problems into steps**: We separated normalization from grouping
+2. **Preprocess data before comparison**: Normalization makes matching more effective
+3. **Choose appropriate algorithms**: `token_set_ratio` works better than basic string comparison for product descriptions
+4. **Use parameters to control behavior**: The threshold value lets us adjust how strict the matching is
+5. **Manage already-processed data**: The `used_indices` set prevents duplicate grouping
+
+Try modifying the `threshold` parameter to see how it affects the grouping results!
+

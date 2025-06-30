@@ -1,0 +1,13 @@
+---
+title: 'Exercises'
+jupyter: python3
+---
+
+Try these exercises to practice what you've learned:
+
+1. Extract all URLs from a text document using regex
+2. Create a function to normalize company names for deduplication
+3. Implement a simple spell checker using fuzzy matching and a dictionary
+4. Write a regex to validate password strength based on common criteria
+5. Create a function that can extract structured data (like addresses) from unstructured text
+

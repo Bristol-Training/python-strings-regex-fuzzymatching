@@ -1,0 +1,521 @@
+---
+title: 'Regular Expressions (Regex)'
+jupyter: python3
+---
+
+
+Regular expressions allow for powerful pattern matching within strings. Python's `re` module provides regex functionality.
+
+### Regex Reference
+
+Here's a quick reference of common regex patterns:
+
+| Pattern     | Description                           |
+|-------------|---------------------------------------|
+| `\d`        | Digit (0-9)                          |
+| `\w`        | Word character (a-z, A-Z, 0-9, _)    |
+| `\s`        | Whitespace                           |
+| `\b`        | Word boundary                        |
+| `[abc]`     | Any character in brackets            |
+| `[^abc]`    | Any character not in brackets        |
+| `a*`        | Zero or more 'a'                     |
+| `a+`        | One or more 'a'                      |
+| `a?`        | Zero or one 'a'                      |
+| `a{3}`      | Exactly 3 'a'                        |
+| `a{2,4}`    | 2 to 4 'a'                           |
+| `()`        | Capture group                        |
+| `a|b`       | Match 'a' or 'b'                     |
+
+For the full regex documentation, see the [Python Regex Documentation](https://docs.python.org/3/library/re.html) and try out patterns at [Regex101](https://regex101.com/) - an interactive regex tester.
+
+```{python}
+import re
+
+# Basic pattern matching
+text = "The rainfall was 25.5 mm on Monday and 32.7 mm on Tuesday."
+
+# Find all numbers (including decimals)
+# \d+ matches one or more digits
+# \.? matches an optional decimal point
+# \d* matches zero or more digits after the decimal point
+numbers = re.findall(r'\d+\.?\d*', text)
+print("Numbers found:", numbers)
+
+# Find all words that start with capital letters
+# \b is a word boundary
+# [A-Z] matches any capital letter
+# [a-z]* matches zero or more lowercase letters
+# \b is another word boundary to end the word
+capitals = re.findall(r'\b[A-Z][a-z]*\b', text)
+print("Capitalized words:", capitals)
+```
+
+Regex are easy to get wrong, so it's good to write little test cases where you know what the answer should be to make sure your code is working correctly:
+
+```{python}
+testtext = "Here are Some words some Start With capital letters"
+capitals = re.findall(r'\b[A-Z][a-z]*\b', testtext)
+assert capitals == ["Here", "Some", "Start", "With"], "Error your output should have been " + str(capitals)
+```
+
+### Regex Patterns and Methods
+
+Let's explore more regex functionality with practical examples. The `re` module provides several key functions:
+
+- `re.search()`: Finds the first match of a pattern
+- `re.findall()`: Finds all non-overlapping matches
+- `re.sub()`: Substitutes matching patterns with a replacement
+- `re.compile()`: Compiles a regex pattern for reuse
+- `re.finditer()`: Returns an iterator of match objects
+
+See [Python's re module documentation](https://docs.python.org/3/library/re.html#module-contents) for more details.
+
+```{python}
+# Common regex functions: search, match, findall, sub
+
+# Email pattern explanation:
+# [\w\.-]+ - one or more word characters, dots, or hyphens (username)
+# @ - literal @ symbol
+# [\w\.-]+ - one or more word characters, dots, or hyphens (domain name)
+# \. - literal dot
+# [a-zA-Z]{2,} - two or more letters (top-level domain)
+email_pattern = r'[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}'
+text = "Contact us at info@example.com or support@company.co.uk for assistance."
+
+# search finds first match
+match = re.search(email_pattern, text)
+if match:
+    print(f"First email found: {match.group()} at position {match.start()}")
+
+# findall gets all matches
+emails = re.findall(email_pattern, text)
+print(f"All emails: {emails}")
+
+# sub replaces matches
+redacted = re.sub(email_pattern, "[EMAIL REDACTED]", text)
+print(f"Redacted text: {redacted}")
+
+# Capturing groups with ()
+date_text = "Important dates: 2023-04-15, 2023-05-22, and 2023-06-30."
+
+# Date pattern breakdown:
+# (\d{4}) - capturing group for 4 digits (year)
+# - - literal hyphen
+# (\d{2}) - capturing group for 2 digits (month)
+# - - literal hyphen
+# (\d{2}) - capturing group for 2 digits (day)
+date_pattern = r'(\d{4})-(\d{2})-(\d{2})'
+
+for match in re.finditer(date_pattern, date_text):
+    print(f"Full date: {match.group(0)}")
+    print(f"  Year: {match.group(1)}")
+    print(f"  Month: {match.group(2)}")
+    print(f"  Day: {match.group(3)}")
+```
+
+### Practical Example: Data Extraction
+
+**Problem Statement**: We need to extract error messages from a log file and analyze the frequency of different log types.
+
+**Approach**:
+1. Define regex patterns to match log entries
+2. Use capturing groups to extract relevant information (timestamp, message)
+3. Analyze the extracted data
+
+```{python}
+log_data = """
+2023-06-15 08:24:32 INFO Server started successfully
+2023-06-15 08:25:47 WARNING Disk space at 85%
+2023-06-15 08:30:15 ERROR Failed to connect to database: timeout
+2023-06-15 08:35:22 INFO User admin logged in
+2023-06-15 08:40:13 ERROR Authentication failed for user guest
+"""
+
+# Extract error messages
+# Pattern breakdown:
+# (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) - capture the timestamp
+# ERROR - match the ERROR log level
+# (.*) - capture the rest of the line (the error message)
+error_pattern = r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) ERROR (.*)'
+errors = re.findall(error_pattern, log_data)
+
+print("Error log entries:")
+for timestamp, message in errors:
+    print(f"[{timestamp}] {message}")
+
+# Count log types
+# Pattern breakdown:
+# space followed by INFO, WARNING, or ERROR
+log_types = re.findall(r' (INFO|WARNING|ERROR) ', log_data)
+print("\nLog type counts:")
+for log_type in set(log_types):
+    count = log_types.count(log_type)
+    print(f"{log_type}: {count}")
+```
+
+## 3. Fuzzy String Matching
+
+Sometimes we need to find approximate matches rather than exact patterns. This is where fuzzy matching comes in.
+
+Let's install the necessary library first. It's recommended to do this in a virtual environment to keep your dependencies isolated.
+
+```bash
+# Create a virtual environment (recommended)
+conda create -n fuzzy_matching
+
+# Activate the environment
+conda activate fuzzy_matching
+
+```{python}
+# Install required package
+# Uncomment and run this cell if needed
+# !pip install fuzzywuzzy python-Levenshtein
+```
+
+### Introduction to Fuzzy Matching
+
+Fuzzy matching measures the similarity between strings. The `fuzzywuzzy` library provides several similarity metrics:
+
+- `ratio`: Simple string similarity based on Levenshtein distance
+- `partial_ratio`: Similarity of the best matching substring
+- `token_sort_ratio`: Similarity after sorting tokens (words)
+- `token_set_ratio`: Similarity based on unique tokens, regardless of order
+
+For more information, see the [FuzzyWuzzy GitHub repository](https://github.com/seatgeek/fuzzywuzzy).
+
+```{python}
+from fuzzywuzzy import fuzz, process
+
+# Basic similarity scores
+s1 = "Python Programming"
+s2 = "programming python"
+s3 = "Pythn Programing"
+s4 = "Java Programming"
+```
+
+The `fuzzywuzzy.ratio()` method is a function within the FuzzyWuzzy Python library that calculates the similarity between two strings.
+
+# Levenshtein Distance
+At its core, it utilizes the Levenshtein distance, which measures the minimum number of single-character edits (insertions, deletions, or substitutions) required to change one string into the other.   
+
+- Similarity Score:
+The `ratio()` method then translates this distance into a similarity score, expressed as a percentage between 0 and 100. A score of 100 indicates a perfect match.
+- Purpose:
+It's designed to handle situations where strings might not be exactly identical due to typos, variations in spelling, or other minor differences.
+- How it works:
+Essentially it takes the two strings, and then calculates the Levenshtein distance. That distance is then used in a calculation to return a number between 0 and 100, that represents how similar the two strings are.
+
+In essence, `fuzzywuzzy.ratio()` provides a quick and effective way to quantify the likeness of two strings.
+
+```{python}
+# Simple ratio - Character-based similarity
+print(f"How similar are `{s1}` and `{s2}`?")
+print(f"Simple ratio: {fuzz.ratio(s1.lower(), s2.lower())}")
+```
+
+The `fuzzywuzzy.token_sort_ratio()` method is another similarity scoring function within the FuzzyWuzzy library, designed to handle cases where strings have the same words but in a different order.
+
+# Tokenization
+First, it splits the input strings into individual words (tokens).
+# Sorting
+Then, it sorts these tokens alphabetically.
+# String Reconstruction
+The sorted tokens are then joined back into strings.
+# Ratio Calculation
+Finally, it calculates the simple ratio() between these sorted strings, effectively ignoring word order.
+
+# Key Differences from `ratio()`
+
+- `ratio()` is sensitive to word order.
+- `token_sort_ratio()` is insensitive to word order.
+
+# Use Case:
+This method is particularly useful when comparing strings where the word order might vary, such as addresses, names with titles, or phrases with slight rearrangements.
+
+# Example:
+"New York Mets" and "Mets New York" would have a low `ratio()` score because of the different word order.
+However, they would have a perfect `token_sort_ratio()` score of 100 because the words are the same, just in a different order.
+
+In summary, `token_sort_ratio()` prioritizes the presence of the same words, regardless of their sequence, by sorting the tokens before calculating the similarity.
+
+```{python}
+# Token sort ratio - Word-based similarity after sorting
+print(f"Token sort ratio: {fuzz.token_sort_ratio(s1.lower(), s2.lower())}")
+```
+
+The `fuzzywuzzy.partial_ratio()` method is designed to find the best partial match between two strings.
+
+# Partial Matching: 
+Unlike `fuzz.ratio()`, which compares the entire strings, `partial_ratio()` looks for the best substring match. This is particularly useful when one string is much longer than the other, and you're interested in whether the shorter string exists within the longer one.
+# Substring Comparison:
+It essentially takes the shorter string and compares it to all possible substrings of the same length within the longer string.
+It then returns the highest similarity score found among those substring comparisons.
+# Use Cases:
+This is very helpful in situations like:
+Comparing a short address snippet to a full address.
+Finding a name within a longer text string.
+Searching for a product name inside of a much longer product description.
+# Key points:
+It focuses on finding if a smaller string is contained inside of a larger string.
+It returns the highest ratio of similarity found when comparing the smaller string to all possible substrings of the larger string.
+
+In essence, `partial_ratio()` helps identify partial string matches, making it robust for cases where exact string equality is not expected.
+
+```{python}
+# Partial ratio - Best substring match
+print(f"Partial ratio: {fuzz.partial_ratio(s1.lower(), s2.lower())}")
+```
+
+```{python}
+print("\nComparing multiple strings to 'Python Programming':")
+for s in [s2, s3, s4]:
+    print(f"{s!r}: {fuzz.ratio(s1.lower(), s.lower())}")
+```
+
+### Finding Best Matches in a List
+
+**Problem**: We need to find the closest matches to user input that may contain typos.
+
+**Approach**:
+1. Define a list of correct terms (fruits in this case)
+2. For each user query (potentially with typos), find the closest matches
+3. Rank matches by similarity score
+
+```{python}
+# Example: Finding the closest match in a list
+fruits = ["apple", "banana", "orange", "strawberry", "blueberry", "blackberry"]
+
+# Sample user inputs with typos
+queries = ["aple", "banan", "blckberry", "strawbery"]
+
+for query in queries:
+    print(f"Query: {query}")
+    
+    # Get top 2 matches with scores using process.extract
+    # This function takes:
+    # - The query string
+    # - A list of choices to match against
+    # - limit: number of results to return
+    matches = process.extract(query, fruits, limit=2)
+    for match, score in matches:
+        print(f"  Match: {match}, Score: {score}")
+    
+    # Get the single best match using process.extractOne
+    # Returns a tuple of (best_match, score)
+    best_match = process.extractOne(query, fruits)
+    print(f"  Best match: {best_match[0]} (Score: {best_match[1]})\n")
+```
+
+### Practical Example: Deduplicating User Entry Data
+
+**Problem Statement**: We have a list of city names entered by users that may contain duplicates with slight variations (e.g., "New York" vs "NYC"). We need to identify potential duplicates.
+
+**Approach**:
+1. Define a function to detect similar items using fuzzy matching
+2. Compare each pair of cities and calculate similarity
+3. Identify pairs with similarity above a certain threshold
+
+```{python}
+# Example: Deduplicating user-entered data
+cities = [
+    "New York", "New York City", "NYC", "San Francisco", "San Fransisco",
+    "Sanfran", "Los Angeles", "LA", "Los Angles", "Chicago"
+]
+
+def find_duplicates(items, threshold=80):
+    """Find potential duplicates in a list based on fuzzy matching
+    
+    Args:
+        items: List of strings to check for duplicates
+        threshold: Minimum similarity score (0-100) to consider as duplicate
+        
+    Returns:
+        List of tuples (item1, item2, similarity_score)
+    """
+    duplicates = []
+    
+    # Check each pair of items
+    for i, item1 in enumerate(items):
+        for j, item2 in enumerate(items[i+1:], i+1):
+            # Use token_sort_ratio for better matching of different word orders
+            similarity = fuzz.token_sort_ratio(item1.lower(), item2.lower())
+            if similarity >= threshold:
+                duplicates.append((item1, item2, similarity))
+    
+    return duplicates
+
+# Find potential duplicates
+potential_dupes = find_duplicates(cities)
+print("Potential duplicate cities:")
+for item1, item2, score in potential_dupes:
+    print(f"{item1} ⟷ {item2}: {score}%")
+```
+
+## 4. Combined Techniques: Putting It All Together
+
+Let's solve a practical problem that combines strings, regex, and fuzzy matching.
+
+**Problem Statement**: We have a dataset of product descriptions that may refer to the same product but with different wording or formatting. We need to:
+1. Clean and normalize the product descriptions
+2. Group similar products together
+
+**Approach**:
+1. **Analyze the data**: Notice what varies between similar product descriptions (order of words, extra information in parentheses, spacing around storage values)
+2. **Normalize the text**: Create a standard format to make comparison easier
+3. **Compare the normalized descriptions**: Use fuzzy matching to find similar products
+4. **Group the results**: Place similar products together
+
+### Step 1: Understand and Normalize the Data
+
+```{python}
+# Scenario: Cleaning and matching product descriptions
+import re
+from fuzzywuzzy import fuzz
+
+# Sample data: Product descriptions
+products = [
+    "Samsung Galaxy S21 5G 128GB Smartphone (Unlocked)",
+    "Samsung Galaxy S21 Ultra 256GB 5G Phone",
+    "Samsung S21 5G 128 GB",
+    "iPhone 13 Pro Max 256GB - Graphite",
+    "Apple iPhone 13 Pro Max (256 GB, Graphite)",
+    "iPhone13 Pro 256GB",
+    "Google Pixel 6 Pro 128GB - Stormy Black",
+    "Pixel 6 Pro (128 GB) Stormy Black color"
+]
+```
+
+```{python}
+def normalize_product_text(text):
+    """Clean and normalize product text for better matching"""
+    # Step 1: Convert to lowercase for case-insensitive comparison
+    text = text.lower()
+    
+    # Step 2: Remove parentheses and their contents (often optional info)
+    text = re.sub(r'\([^)]*\)', '', text)
+    
+    # Step 3: Remove punctuation and standardize spacing
+    text = re.sub(r'[^\w\s]', ' ', text)
+    
+    # Step 4: Standardize storage notation (e.g., 128GB, 128 GB -> 128gb)
+    text = re.sub(r'(\d+)\s*gb', r'\1gb', text)
+    
+    # Step 5: Remove common filler words that don't help identify products
+    text = re.sub(r'\b(smartphone|phone|color|unlocked)\b', '', text)
+    
+    # Step 6: Normalize whitespace for clean comparison
+    text = ' '.join(text.split())
+    
+    return text
+```
+
+```{python}
+# Normalize all products
+normalized_products = [normalize_product_text(p) for p in products]
+
+print("Original vs. Normalized:")
+for original, normalized in zip(products, normalized_products):
+    print(f"Original: {original}")
+    print(f"Normalized: {normalized}\n")
+```
+
+### Step 2: Group Similar Products Using Fuzzy Matching
+
+```{python}
+# Group similar products
+def group_similar_products(products, normalized_products, threshold=80):
+    """Group similar products based on fuzzy matching"""
+    groups = []
+    used_indices = set()
+    
+    # Step 1: Iterate through each product
+    for i, norm_p1 in enumerate(normalized_products):
+        if i in used_indices:
+            continue
+            
+        # Step 2: Start a new group with this product
+        group = [products[i]]
+        used_indices.add(i)
+        
+        # Step 3: Find similar products by comparing with all others
+        for j, norm_p2 in enumerate(normalized_products):
+            if j != i and j not in used_indices:
+                # Step 4: Use token_set_ratio to handle different word orders
+                # and partial matches (this is key for product description matching!)
+                similarity = fuzz.token_set_ratio(norm_p1, norm_p2)
+                
+                # Step 5: If similarity exceeds our threshold, consider it a match
+                if similarity >= threshold:
+                    group.append(products[j])
+                    used_indices.add(j)
+        
+        # Step 6: Add this group to our collection
+        groups.append(group)
+    
+    return groups
+```
+
+```{python}
+# Group similar products
+similar_groups = group_similar_products(products, normalized_products)
+
+print("Similar Product Groups:")
+for i, group in enumerate(similar_groups, 1):
+    print(f"\nGroup {i}:")
+    for product in group:
+        print(f"  - {product}")
+```
+
+### Key Problem-Solving Takeaways:
+
+1. **Break complex problems into steps**: We separated normalization from grouping
+2. **Preprocess data before comparison**: Normalization makes matching more effective
+3. **Choose appropriate algorithms**: `token_set_ratio` works better than basic string comparison for product descriptions
+4. **Use parameters to control behavior**: The threshold value lets us adjust how strict the matching is
+5. **Manage already-processed data**: The `used_indices` set prevents duplicate grouping
+
+Try modifying the `threshold` parameter to see how it affects the grouping results!
+
+## 5. Summary and Best Practices
+
+### When to use each technique:
+
+1. **String Methods**: Best for simple operations on well-structured text
+   - Splitting, joining, case changes, simple replacements
+   - Fast and built-in to Python
+
+2. **Regular Expressions**: Best for pattern matching and extraction
+   - When you need to find or replace text that follows specific patterns
+   - Extracting structured data from text
+   - Validating formats (emails, phone numbers, etc.)
+
+3. **Fuzzy Matching**: Best for comparing similar but not identical strings
+   - Handling user input with typos or variations
+   - Deduplicating data where entries might differ slightly
+   - Searching for approximate matches
+
+### Performance Considerations:
+
+- String methods are fastest
+- Regex is powerful but can be slower for complex patterns
+- Fuzzy matching is the most computationally intensive
+- Precompile regex patterns when reusing them
+- Normalize strings before comparison to improve match quality
+
+### Further Learning Resources:
+
+- [Python String Documentation](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str)
+- [Python Regex Documentation](https://docs.python.org/3/library/re.html)
+- [Regex101](https://regex101.com/) - Interactive regex tester
+- [FuzzyWuzzy Documentation](https://github.com/seatgeek/fuzzywuzzy)
+
+## 6. Exercises
+
+Try these exercises to practice what you've learned:
+
+1. Extract all URLs from a text document using regex
+2. Create a function to normalize company names for deduplication
+3. Implement a simple spell checker using fuzzy matching and a dictionary
+4. Write a regex to validate password strength based on common criteria
+5. Create a function that can extract structured data (like addresses) from unstructured text
+

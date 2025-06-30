@@ -1,0 +1,201 @@
+---
+title: 'Fuzzy String Matching'
+jupyter: python3
+---
+
+
+Sometimes we need to find approximate matches rather than exact patterns. This is where fuzzy matching comes in.
+
+Let's install the necessary library first. It's recommended to do this in a virtual environment to keep your dependencies isolated.
+
+```bash
+# Create a virtual environment (recommended)
+conda create -n fuzzy_matching
+
+# Activate the environment
+conda activate fuzzy_matching
+
+```{python}
+# Install required package
+# Uncomment and run this cell if needed
+# !pip install fuzzywuzzy python-Levenshtein
+```
+
+### Introduction to Fuzzy Matching
+
+Fuzzy matching measures the similarity between strings. The `fuzzywuzzy` library provides several similarity metrics:
+
+- `ratio`: Simple string similarity based on Levenshtein distance
+- `partial_ratio`: Similarity of the best matching substring
+- `token_sort_ratio`: Similarity after sorting tokens (words)
+- `token_set_ratio`: Similarity based on unique tokens, regardless of order
+
+For more information, see the [FuzzyWuzzy GitHub repository](https://github.com/seatgeek/fuzzywuzzy).
+
+```{python}
+from fuzzywuzzy import fuzz, process
+
+# Basic similarity scores
+s1 = "Python Programming"
+s2 = "programming python"
+s3 = "Pythn Programing"
+s4 = "Java Programming"
+```
+
+The `fuzzywuzzy.ratio()` method is a function within the FuzzyWuzzy Python library that calculates the similarity between two strings.
+
+# Levenshtein Distance
+At its core, it utilizes the Levenshtein distance, which measures the minimum number of single-character edits (insertions, deletions, or substitutions) required to change one string into the other.   
+
+- Similarity Score:
+The `ratio()` method then translates this distance into a similarity score, expressed as a percentage between 0 and 100. A score of 100 indicates a perfect match.
+- Purpose:
+It's designed to handle situations where strings might not be exactly identical due to typos, variations in spelling, or other minor differences.
+- How it works:
+Essentially it takes the two strings, and then calculates the Levenshtein distance. That distance is then used in a calculation to return a number between 0 and 100, that represents how similar the two strings are.
+
+In essence, `fuzzywuzzy.ratio()` provides a quick and effective way to quantify the likeness of two strings.
+
+```{python}
+# Simple ratio - Character-based similarity
+print(f"How similar are `{s1}` and `{s2}`?")
+print(f"Simple ratio: {fuzz.ratio(s1.lower(), s2.lower())}")
+```
+
+The `fuzzywuzzy.token_sort_ratio()` method is another similarity scoring function within the FuzzyWuzzy library, designed to handle cases where strings have the same words but in a different order.
+
+# Tokenization
+First, it splits the input strings into individual words (tokens).
+# Sorting
+Then, it sorts these tokens alphabetically.
+# String Reconstruction
+The sorted tokens are then joined back into strings.
+# Ratio Calculation
+Finally, it calculates the simple ratio() between these sorted strings, effectively ignoring word order.
+
+# Key Differences from `ratio()`
+
+- `ratio()` is sensitive to word order.
+- `token_sort_ratio()` is insensitive to word order.
+
+# Use Case:
+This method is particularly useful when comparing strings where the word order might vary, such as addresses, names with titles, or phrases with slight rearrangements.
+
+# Example:
+"New York Mets" and "Mets New York" would have a low `ratio()` score because of the different word order.
+However, they would have a perfect `token_sort_ratio()` score of 100 because the words are the same, just in a different order.
+
+In summary, `token_sort_ratio()` prioritizes the presence of the same words, regardless of their sequence, by sorting the tokens before calculating the similarity.
+
+```{python}
+# Token sort ratio - Word-based similarity after sorting
+print(f"Token sort ratio: {fuzz.token_sort_ratio(s1.lower(), s2.lower())}")
+```
+
+The `fuzzywuzzy.partial_ratio()` method is designed to find the best partial match between two strings.
+
+# Partial Matching: 
+Unlike `fuzz.ratio()`, which compares the entire strings, `partial_ratio()` looks for the best substring match. This is particularly useful when one string is much longer than the other, and you're interested in whether the shorter string exists within the longer one.
+# Substring Comparison:
+It essentially takes the shorter string and compares it to all possible substrings of the same length within the longer string.
+It then returns the highest similarity score found among those substring comparisons.
+# Use Cases:
+This is very helpful in situations like:
+Comparing a short address snippet to a full address.
+Finding a name within a longer text string.
+Searching for a product name inside of a much longer product description.
+# Key points:
+It focuses on finding if a smaller string is contained inside of a larger string.
+It returns the highest ratio of similarity found when comparing the smaller string to all possible substrings of the larger string.
+
+In essence, `partial_ratio()` helps identify partial string matches, making it robust for cases where exact string equality is not expected.
+
+```{python}
+# Partial ratio - Best substring match
+print(f"Partial ratio: {fuzz.partial_ratio(s1.lower(), s2.lower())}")
+```
+
+```{python}
+print("\nComparing multiple strings to 'Python Programming':")
+for s in [s2, s3, s4]:
+    print(f"{s!r}: {fuzz.ratio(s1.lower(), s.lower())}")
+```
+
+### Finding Best Matches in a List
+
+**Problem**: We need to find the closest matches to user input that may contain typos.
+
+**Approach**:
+1. Define a list of correct terms (fruits in this case)
+2. For each user query (potentially with typos), find the closest matches
+3. Rank matches by similarity score
+
+```{python}
+# Example: Finding the closest match in a list
+fruits = ["apple", "banana", "orange", "strawberry", "blueberry", "blackberry"]
+
+# Sample user inputs with typos
+queries = ["aple", "banan", "blckberry", "strawbery"]
+
+for query in queries:
+    print(f"Query: {query}")
+    
+    # Get top 2 matches with scores using process.extract
+    # This function takes:
+    # - The query string
+    # - A list of choices to match against
+    # - limit: number of results to return
+    matches = process.extract(query, fruits, limit=2)
+    for match, score in matches:
+        print(f"  Match: {match}, Score: {score}")
+    
+    # Get the single best match using process.extractOne
+    # Returns a tuple of (best_match, score)
+    best_match = process.extractOne(query, fruits)
+    print(f"  Best match: {best_match[0]} (Score: {best_match[1]})\n")
+```
+
+### Practical Example: Deduplicating User Entry Data
+
+**Problem Statement**: We have a list of city names entered by users that may contain duplicates with slight variations (e.g., "New York" vs "NYC"). We need to identify potential duplicates.
+
+**Approach**:
+1. Define a function to detect similar items using fuzzy matching
+2. Compare each pair of cities and calculate similarity
+3. Identify pairs with similarity above a certain threshold
+
+```{python}
+# Example: Deduplicating user-entered data
+cities = [
+    "New York", "New York City", "NYC", "San Francisco", "San Fransisco",
+    "Sanfran", "Los Angeles", "LA", "Los Angles", "Chicago"
+]
+
+def find_duplicates(items, threshold=80):
+    """Find potential duplicates in a list based on fuzzy matching
+    
+    Args:
+        items: List of strings to check for duplicates
+        threshold: Minimum similarity score (0-100) to consider as duplicate
+        
+    Returns:
+        List of tuples (item1, item2, similarity_score)
+    """
+    duplicates = []
+    
+    # Check each pair of items
+    for i, item1 in enumerate(items):
+        for j, item2 in enumerate(items[i+1:], i+1):
+            # Use token_sort_ratio for better matching of different word orders
+            similarity = fuzz.token_sort_ratio(item1.lower(), item2.lower())
+            if similarity >= threshold:
+                duplicates.append((item1, item2, similarity))
+    
+    return duplicates
+
+# Find potential duplicates
+potential_dupes = find_duplicates(cities)
+print("Potential duplicate cities:")
+for item1, item2, score in potential_dupes:
+    print(f"{item1} ⟷ {item2}: {score}%")
+```

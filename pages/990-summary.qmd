@@ -1,0 +1,35 @@
+---
+title: Summary and Best Practices
+---
+
+
+### When to use each technique:
+
+1. **String Methods**: Best for simple operations on well-structured text
+   - Splitting, joining, case changes, simple replacements
+   - Fast and built-in to Python
+
+2. **Regular Expressions**: Best for pattern matching and extraction
+   - When you need to find or replace text that follows specific patterns
+   - Extracting structured data from text
+   - Validating formats (emails, phone numbers, etc.)
+
+3. **Fuzzy Matching**: Best for comparing similar but not identical strings
+   - Handling user input with typos or variations
+   - Deduplicating data where entries might differ slightly
+   - Searching for approximate matches
+
+### Performance Considerations:
+
+- String methods are fastest
+- Regex is powerful but can be slower for complex patterns
+- Fuzzy matching is the most computationally intensive
+- Precompile regex patterns when reusing them
+- Normalize strings before comparison to improve match quality
+
+### Further Learning Resources:
+
+- [Python String Documentation](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str)
+- [Python Regex Documentation](https://docs.python.org/3/library/re.html)
+- [Regex101](https://regex101.com/) - Interactive regex tester
+- [FuzzyWuzzy Documentation](https://github.com/seatgeek/fuzzywuzzy)

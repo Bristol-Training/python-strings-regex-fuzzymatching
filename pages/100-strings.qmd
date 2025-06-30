@@ -1,0 +1,88 @@
+---
+title: 'Python Strings: Beyond the Basics'
+jupyter: python3
+---
+
+Let's start with a quick refresher on some powerful string methods you may not use every day. For comprehensive documentation on Python strings, see the [Python String Documentation](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str).
+
+```{python}
+# String Methods Review
+sample_text = "The quick brown fox jumps over the lazy dog"
+
+# Splitting and joining
+words = sample_text.split() #The split method divides a string into a list of substrings based on a specified separator (space by default)
+print("Split into words:", words)
+print("Joined with dashes:", "-".join(words)) #The join method combines a list of strings into one string, with a separator between each item.
+```
+
+```{python}
+# Case manipulation
+print("\nCase manipulation:")
+print("Title case:", sample_text.title()) #The title method converts the first character of each word to uppercase and the remaining characters to lowercase.
+print("Swapped case:", sample_text.swapcase()) #The swapcase method returns a copy of the string with uppercase characters converted to lowercase and lowercase characters converted to uppercase.
+```
+
+```{python}
+# Finding and counting
+print("\nFinding and counting:")
+print("'the' appears at index:", sample_text.lower().find("the")) #The find method tells you where a substring appears in a string, or returns -1 if it isn't there.
+print("'the' appears", sample_text.lower().count("the"), "times") #The count method returns the number of times a specified substring appears in the string
+```
+
+```{python}
+# Stripping and replacing
+padded_text = "   \t  spaces around   \n"
+print("\nStripped text:", padded_text.strip()) #The strip method removes specified characters (spaces by default) from the beginning and end of a string.
+print("Replacing:", sample_text.replace("fox", "cat")) #The replace method returns a new string where specified occurrences of an old substring are replaced with a new substring.
+```
+
+
+### Practical Example: Text Preprocessing
+
+Let's look at a common task: preprocessing text for analysis. We'll break this down into steps:
+
+1. Convert text to lowercase to ensure consistency
+2. Remove punctuation that might interfere with word analysis
+3. Normalize whitespace to standardize the text
+
+```{python}
+def preprocess_text(text):
+    """Simple preprocessing function for text analysis"""
+    # Convert to lowercase
+    text = text.lower()
+    
+    # Remove punctuation (simple approach)
+    for char in ".,!?;:()[]{}'\"\\_-":
+        text = text.replace(char, " ")
+    
+    # Normalize whitespace
+    text = " ".join(text.split())
+    
+    return text
+
+sample = "Hello, world! This is a sample text... with some punctuation."
+preprocessed = preprocess_text(sample)
+print("Original:", sample)
+print("Preprocessed:", preprocessed)
+```
+
+### F-strings and Formatting
+
+F-strings (introduced in Python 3.6) make string formatting much more readable. The syntax `f"...{variable}..."` allows embedding expressions inside string literals.
+
+For more details, see the [Python f-string documentation](https://docs.python.org/3/reference/lexical_analysis.html#f-strings).
+
+```{python}
+name = "Python"
+version = 3.11
+years = 32
+
+# F-string with expressions and formatting
+print(f"{name} {version} is a powerful language that's {years} years old!")
+print(f"Half of {years} is {years/2:.1f}")  # :.1f formats to 1 decimal place
+
+# Alignment and padding
+for i in range(1, 11):
+    # :2d means format as decimal integer with width 2
+    print(f"{i:2d} squared is {i**2:3d} and cubed is {i**3:4d}")
+```

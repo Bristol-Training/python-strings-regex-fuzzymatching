@@ -1,0 +1,7 @@
+---
+title: Contributors
+---
+
+This course was written by Fahd Abdelazim with the support of Huw Day.
+
+The course is maintained by the Jean Golding Institute.
