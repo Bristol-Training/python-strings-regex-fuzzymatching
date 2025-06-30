@@ -78,10 +78,10 @@ Finally, it calculates the simple ratio() between these sorted strings, effectiv
 - `ratio()` is sensitive to word order.
 - `token_sort_ratio()` is insensitive to word order.
 
-# Use Case:
+# Use Case
 This method is particularly useful when comparing strings where the word order might vary, such as addresses, names with titles, or phrases with slight rearrangements.
 
-# Example:
+# Example
 "New York Mets" and "Mets New York" would have a low `ratio()` score because of the different word order.
 However, they would have a perfect `token_sort_ratio()` score of 100 because the words are the same, just in a different order.
 
@@ -94,17 +94,20 @@ print(f"Token sort ratio: {fuzz.token_sort_ratio(s1.lower(), s2.lower())}")
 
 The `fuzzywuzzy.partial_ratio()` method is designed to find the best partial match between two strings.
 
-# Partial Matching: 
+# Partial Matching
 Unlike `fuzz.ratio()`, which compares the entire strings, `partial_ratio()` looks for the best substring match. This is particularly useful when one string is much longer than the other, and you're interested in whether the shorter string exists within the longer one.
-# Substring Comparison:
+
+# Substring Comparison
 It essentially takes the shorter string and compares it to all possible substrings of the same length within the longer string.
 It then returns the highest similarity score found among those substring comparisons.
-# Use Cases:
+
+# Use Cases
 This is very helpful in situations like:
 Comparing a short address snippet to a full address.
 Finding a name within a longer text string.
 Searching for a product name inside of a much longer product description.
-# Key points:
+
+# Key points
 It focuses on finding if a smaller string is contained inside of a larger string.
 It returns the highest ratio of similarity found when comparing the smaller string to all possible substrings of the larger string.
 
@@ -126,6 +129,7 @@ for s in [s2, s3, s4]:
 **Problem**: We need to find the closest matches to user input that may contain typos.
 
 **Approach**:
+
 1. Define a list of correct terms (fruits in this case)
 2. For each user query (potentially with typos), find the closest matches
 3. Rank matches by similarity score
@@ -160,6 +164,7 @@ for query in queries:
 **Problem Statement**: We have a list of city names entered by users that may contain duplicates with slight variations (e.g., "New York" vs "NYC"). We need to identify potential duplicates.
 
 **Approach**:
+
 1. Define a function to detect similar items using fuzzy matching
 2. Compare each pair of cities and calculate similarity
 3. Identify pairs with similarity above a certain threshold

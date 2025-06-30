@@ -7,10 +7,12 @@ jupyter: python3
 Let's solve a practical problem that combines strings, regex, and fuzzy matching.
 
 **Problem Statement**: We have a dataset of product descriptions that may refer to the same product but with different wording or formatting. We need to:
+
 1. Clean and normalize the product descriptions
 2. Group similar products together
 
 **Approach**:
+
 1. **Analyze the data**: Notice what varies between similar product descriptions (order of words, extra information in parentheses, spacing around storage values)
 2. **Normalize the text**: Create a standard format to make comparison easier
 3. **Compare the normalized descriptions**: Use fuzzy matching to find similar products
@@ -117,7 +119,7 @@ for i, group in enumerate(similar_groups, 1):
         print(f"  - {product}")
 ```
 
-### Key Problem-Solving Takeaways:
+### Key Problem-Solving Takeaways
 
 1. **Break complex problems into steps**: We separated normalization from grouping
 2. **Preprocess data before comparison**: Normalization makes matching more effective
