@@ -30,16 +30,6 @@
     ]
   },
   {
-    "objectID": "pages/990-summary.html",
-    "href": "pages/990-summary.html",
-    "title": "Summary and Best Practices",
-    "section": "",
-    "text": "When to use each technique:\n\nString Methods: Best for simple operations on well-structured text\n\nSplitting, joining, case changes, simple replacements\nFast and built-in to Python\n\nRegular Expressions: Best for pattern matching and extraction\n\nWhen you need to find or replace text that follows specific patterns\nExtracting structured data from text\nValidating formats (emails, phone numbers, etc.)\n\nFuzzy Matching: Best for comparing similar but not identical strings\n\nHandling user input with typos or variations\nDeduplicating data where entries might differ slightly\nSearching for approximate matches\n\n\n\n\nPerformance Considerations:\n\nString methods are fastest\nRegex is powerful but can be slower for complex patterns\nFuzzy matching is the most computationally intensive\nPrecompile regex patterns when reusing them\nNormalize strings before comparison to improve match quality\n\n\n\nFurther Learning Resources:\n\nPython String Documentation\nPython Regex Documentation\nRegex101 - Interactive regex tester\nFuzzyWuzzy Documentation",
-    "crumbs": [
-      "Summary and Best Practices"
-    ]
-  },
-  {
     "objectID": "pages/100-strings.html",
     "href": "pages/100-strings.html",
     "title": "Python Strings: Beyond the Basics",
@@ -50,13 +40,23 @@
     ]
   },
   {
-    "objectID": "pages/000-introduction.html",
-    "href": "pages/000-introduction.html",
+    "objectID": "introduction.html",
+    "href": "introduction.html",
     "title": "Introduction",
     "section": "",
     "text": "This short course provides a concise introduction to working with:\n\nPython strings and their methods\nRegular expressions for pattern matching\nFuzzy matching for approximate string matching\n\nBy the end of this 1-hour session, you’ll have a practical understanding of these techniques and when to apply them.",
     "crumbs": [
       "Introduction"
+    ]
+  },
+  {
+    "objectID": "pages/990-summary.html",
+    "href": "pages/990-summary.html",
+    "title": "Summary and Best Practices",
+    "section": "",
+    "text": "When to use each technique:\n\nString Methods: Best for simple operations on well-structured text\n\nSplitting, joining, case changes, simple replacements\nFast and built-in to Python\n\nRegular Expressions: Best for pattern matching and extraction\n\nWhen you need to find or replace text that follows specific patterns\nExtracting structured data from text\nValidating formats (emails, phone numbers, etc.)\n\nFuzzy Matching: Best for comparing similar but not identical strings\n\nHandling user input with typos or variations\nDeduplicating data where entries might differ slightly\nSearching for approximate matches\n\n\n\n\nPerformance Considerations:\n\nString methods are fastest\nRegex is powerful but can be slower for complex patterns\nFuzzy matching is the most computationally intensive\nPrecompile regex patterns when reusing them\nNormalize strings before comparison to improve match quality\n\n\n\nFurther Learning Resources:\n\nPython String Documentation\nPython Regex Documentation\nRegex101 - Interactive regex tester\nFuzzyWuzzy Documentation",
+    "crumbs": [
+      "Summary and Best Practices"
     ]
   },
   {

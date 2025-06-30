@@ -145,7 +145,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/000-introduction.html" class="sidebar-item-text sidebar-link">
+  <a href="../introduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
@@ -214,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">6. Exercises</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/uob-training/introduction-to-git-and-github/edit/main/pages/200-regex.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/uob-training/introduction-to-git-and-github/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/uob-training/python-strings-regex-fuzzymatching/edit/main/pages/200-regex.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/uob-training/python-strings-regex-fuzzymatching/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -305,7 +305,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>For the full regex documentation, see the <a href="https://docs.python.org/3/library/re.html">Python Regex Documentation</a> and try out patterns at <a href="https://regex101.com/">Regex101</a> - an interactive regex tester.</p>
-<div id="41ddb7fe" class="cell" data-execution_count="1">
+<div id="4e6d78d8" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic pattern matching</span></span>
@@ -331,7 +331,7 @@ Capitalized words: ['The', 'Monday', 'Tuesday']</code></pre>
 </div>
 </div>
 <p>Regex are easy to get wrong, so it’s good to write little test cases where you know what the answer should be to make sure your code is working correctly:</p>
-<div id="97f01cd5" class="cell" data-execution_count="2">
+<div id="623b4c9b" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>testtext <span class="op">=</span> <span class="st">"Here are Some words some Start With capital letters"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>capitals <span class="op">=</span> re.findall(<span class="vs">r'\b[A-Z][a-z]*\b'</span>, testtext)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> capitals <span class="op">==</span> [<span class="st">"Here"</span>, <span class="st">"Some"</span>, <span class="st">"Start"</span>, <span class="st">"With"</span>], <span class="st">"Error your output should have been "</span> <span class="op">+</span> <span class="bu">str</span>(capitals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -348,7 +348,7 @@ Capitalized words: ['The', 'Monday', 'Tuesday']</code></pre>
 <li><code>re.finditer()</code>: Returns an iterator of match objects</li>
 </ul>
 <p>See <a href="https://docs.python.org/3/library/re.html#module-contents">Python’s re module documentation</a> for more details.</p>
-<div id="3175946a" class="cell" data-execution_count="3">
+<div id="49aaf872" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Common regex functions: search, match, findall, sub</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Email pattern explanation:</span></span>
@@ -412,7 +412,7 @@ Full date: 2023-06-30
 <h4 class="anchored" data-anchor-id="practical-example-data-extraction">Practical Example: Data Extraction</h4>
 <p><strong>Problem Statement</strong>: We need to extract error messages from a log file and analyze the frequency of different log types.</p>
 <p><strong>Approach</strong>: 1. Define regex patterns to match log entries 2. Use capturing groups to extract relevant information (timestamp, message) 3. Analyze the extracted data</p>
-<div id="7da0ea34" class="cell" data-execution_count="4">
+<div id="15d0d68c" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>log_data <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">2023-06-15 08:24:32 INFO Server started successfully</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">2023-06-15 08:25:47 WARNING Disk space at 85%</span></span>
@@ -447,9 +447,9 @@ Full date: 2023-06-30
 [2023-06-15 08:40:13] Authentication failed for user guest
 
 Log type counts:
-WARNING: 1
 ERROR: 2
-INFO: 2</code></pre>
+INFO: 2
+WARNING: 1</code></pre>
 </div>
 </div>
 </section>
@@ -463,7 +463,7 @@ INFO: 2</code></pre>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Activate the environment</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate fuzzy_matching</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {#938e677f .cell execution_count=5}</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {#e7632676 .cell execution_count=5}</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span> <span class="ex">{.python</span> .cell-code}</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required package</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Uncomment and run this cell if needed</span></span>
@@ -479,7 +479,7 @@ INFO: 2</code></pre>
 <li><code>token_set_ratio</code>: Similarity based on unique tokens, regardless of order</li>
 </ul>
 <p>For more information, see the <a href="https://github.com/seatgeek/fuzzywuzzy">FuzzyWuzzy GitHub repository</a>.</p>
-<div id="8de21e10" class="cell" data-execution_count="6">
+<div id="3e5e2942" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fuzzywuzzy <span class="im">import</span> fuzz, process</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic similarity scores</span></span>
@@ -500,7 +500,7 @@ INFO: 2</code></pre>
 <li>How it works: Essentially it takes the two strings, and then calculates the Levenshtein distance. That distance is then used in a calculation to return a number between 0 and 100, that represents how similar the two strings are.</li>
 </ul>
 <p>In essence, <code>fuzzywuzzy.ratio()</code> provides a quick and effective way to quantify the likeness of two strings.</p>
-<div id="aef6bb94" class="cell" data-execution_count="7">
+<div id="7d639c76" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple ratio - Character-based similarity</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"How similar are `</span><span class="sc">{</span>s1<span class="sc">}</span><span class="ss">` and `</span><span class="sc">{</span>s2<span class="sc">}</span><span class="ss">`?"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Simple ratio: </span><span class="sc">{</span>fuzz<span class="sc">.</span>ratio(s1.lower(), s2.lower())<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -530,7 +530,7 @@ Simple ratio: 61</code></pre>
 <h2 class="anchored" data-anchor-id="example">Example:</h2>
 <p>“New York Mets” and “Mets New York” would have a low <code>ratio()</code> score because of the different word order. However, they would have a perfect <code>token_sort_ratio()</code> score of 100 because the words are the same, just in a different order.</p>
 <p>In summary, <code>token_sort_ratio()</code> prioritizes the presence of the same words, regardless of their sequence, by sorting the tokens before calculating the similarity.</p>
-<div id="b70d54f0" class="cell" data-execution_count="8">
+<div id="b7db7717" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Token sort ratio - Word-based similarity after sorting</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Token sort ratio: </span><span class="sc">{</span>fuzz<span class="sc">.</span>token_sort_ratio(s1.lower(), s2.lower())<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -543,14 +543,14 @@ Simple ratio: 61</code></pre>
 <h2 class="anchored" data-anchor-id="partial-matching">Partial Matching:</h2>
 <p>Unlike <code>fuzz.ratio()</code>, which compares the entire strings, <code>partial_ratio()</code> looks for the best substring match. This is particularly useful when one string is much longer than the other, and you’re interested in whether the shorter string exists within the longer one. # Substring Comparison: It essentially takes the shorter string and compares it to all possible substrings of the same length within the longer string. It then returns the highest similarity score found among those substring comparisons. # Use Cases: This is very helpful in situations like: Comparing a short address snippet to a full address. Finding a name within a longer text string. Searching for a product name inside of a much longer product description. # Key points: It focuses on finding if a smaller string is contained inside of a larger string. It returns the highest ratio of similarity found when comparing the smaller string to all possible substrings of the larger string.</p>
 <p>In essence, <code>partial_ratio()</code> helps identify partial string matches, making it robust for cases where exact string equality is not expected.</p>
-<div id="85c6e785" class="cell" data-execution_count="9">
+<div id="8f3b13a5" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Partial ratio - Best substring match</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Partial ratio: </span><span class="sc">{</span>fuzz<span class="sc">.</span>partial_ratio(s1.lower(), s2.lower())<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Partial ratio: 61</code></pre>
 </div>
 </div>
-<div id="42bc482b" class="cell" data-execution_count="10">
+<div id="483aca84" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Comparing multiple strings to 'Python Programming':"</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> [s2, s3, s4]:</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>s<span class="sc">!r}</span><span class="ss">: </span><span class="sc">{</span>fuzz<span class="sc">.</span>ratio(s1.lower(), s.lower())<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -566,7 +566,7 @@ Comparing multiple strings to 'Python Programming':
 <h4 class="anchored" data-anchor-id="finding-best-matches-in-a-list">Finding Best Matches in a List</h4>
 <p><strong>Problem</strong>: We need to find the closest matches to user input that may contain typos.</p>
 <p><strong>Approach</strong>: 1. Define a list of correct terms (fruits in this case) 2. For each user query (potentially with typos), find the closest matches 3. Rank matches by similarity score</p>
-<div id="67af28cd" class="cell" data-execution_count="11">
+<div id="3a6d144b" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Finding the closest match in a list</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>fruits <span class="op">=</span> [<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"strawberry"</span>, <span class="st">"blueberry"</span>, <span class="st">"blackberry"</span>]</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -617,7 +617,7 @@ Query: strawbery
 <h4 class="anchored" data-anchor-id="practical-example-deduplicating-user-entry-data">Practical Example: Deduplicating User Entry Data</h4>
 <p><strong>Problem Statement</strong>: We have a list of city names entered by users that may contain duplicates with slight variations (e.g., “New York” vs “NYC”). We need to identify potential duplicates.</p>
 <p><strong>Approach</strong>: 1. Define a function to detect similar items using fuzzy matching 2. Compare each pair of cities and calculate similarity 3. Identify pairs with similarity above a certain threshold</p>
-<div id="15634ea2" class="cell" data-execution_count="12">
+<div id="40e012fb" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Deduplicating user-entered data</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cities <span class="op">=</span> [</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"New York"</span>, <span class="st">"New York City"</span>, <span class="st">"NYC"</span>, <span class="st">"San Francisco"</span>, <span class="st">"San Fransisco"</span>,</span>
@@ -665,7 +665,7 @@ Los Angeles ⟷ Los Angles: 95%</code></pre>
 <p><strong>Approach</strong>: 1. <strong>Analyze the data</strong>: Notice what varies between similar product descriptions (order of words, extra information in parentheses, spacing around storage values) 2. <strong>Normalize the text</strong>: Create a standard format to make comparison easier 3. <strong>Compare the normalized descriptions</strong>: Use fuzzy matching to find similar products 4. <strong>Group the results</strong>: Place similar products together</p>
 <section id="step-1-understand-and-normalize-the-data" class="level4">
 <h4 class="anchored" data-anchor-id="step-1-understand-and-normalize-the-data">Step 1: Understand and Normalize the Data</h4>
-<div id="eccc7b77" class="cell" data-execution_count="13">
+<div id="325041f2" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scenario: Cleaning and matching product descriptions</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fuzzywuzzy <span class="im">import</span> fuzz</span>
@@ -682,7 +682,7 @@ Los Angeles ⟷ Los Angles: 95%</code></pre>
 <span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pixel 6 Pro (128 GB) Stormy Black color"</span></span>
 <span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f40124cd" class="cell" data-execution_count="14">
+<div id="ed27bec6" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_product_text(text):</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Clean and normalize product text for better matching"""</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1: Convert to lowercase for case-insensitive comparison</span></span>
@@ -705,7 +705,7 @@ Los Angeles ⟷ Los Angles: 95%</code></pre>
 <span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="54728646" class="cell" data-execution_count="15">
+<div id="e7e5210e" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize all products</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>normalized_products <span class="op">=</span> [normalize_product_text(p) <span class="cf">for</span> p <span class="kw">in</span> products]</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -744,7 +744,7 @@ Normalized: pixel 6 pro stormy black
 </section>
 <section id="step-2-group-similar-products-using-fuzzy-matching" class="level4">
 <h4 class="anchored" data-anchor-id="step-2-group-similar-products-using-fuzzy-matching">Step 2: Group Similar Products Using Fuzzy Matching</h4>
-<div id="cb5bfceb" class="cell" data-execution_count="16">
+<div id="7a697eda" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group similar products</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> group_similar_products(products, normalized_products, threshold<span class="op">=</span><span class="dv">80</span>):</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Group similar products based on fuzzy matching"""</span></span>
@@ -777,7 +777,7 @@ Normalized: pixel 6 pro stormy black
 <span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> groups</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="c3f1c56b" class="cell" data-execution_count="17">
+<div id="a140e450" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group similar products</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>similar_groups <span class="op">=</span> group_similar_products(products, normalized_products)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1319,7 +1319,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/uob-training/introduction-to-git-and-github/edit/main/pages/200-regex.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/uob-training/introduction-to-git-and-github/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/uob-training/python-strings-regex-fuzzymatching/edit/main/pages/200-regex.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/uob-training/python-strings-regex-fuzzymatching/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>
