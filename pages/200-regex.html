@@ -288,7 +288,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>For the full regex documentation, see the <a href="https://docs.python.org/3/library/re.html">Python Regex Documentation</a> and try out patterns at <a href="https://regex101.com/">Regex101</a> - an interactive regex tester.</p>
-<div id="03a747b1" class="cell" data-execution_count="1">
+<div id="8b3fc0d3" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic pattern matching</span></span>
@@ -314,7 +314,7 @@ Capitalized words: ['The', 'Monday', 'Tuesday']</code></pre>
 </div>
 </div>
 <p>Regex are easy to get wrong, so it’s good to write little test cases where you know what the answer should be to make sure your code is working correctly:</p>
-<div id="c54a113f" class="cell" data-execution_count="2">
+<div id="941c0099" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>testtext <span class="op">=</span> <span class="st">"Here are Some words some Start With capital letters"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>capitals <span class="op">=</span> re.findall(<span class="vs">r'\b[A-Z][a-z]*\b'</span>, testtext)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> capitals <span class="op">==</span> [<span class="st">"Here"</span>, <span class="st">"Some"</span>, <span class="st">"Start"</span>, <span class="st">"With"</span>], <span class="st">"Error your output should have been "</span> <span class="op">+</span> <span class="bu">str</span>(capitals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -331,7 +331,7 @@ Capitalized words: ['The', 'Monday', 'Tuesday']</code></pre>
 <li><code>re.finditer()</code>: Returns an iterator of match objects</li>
 </ul>
 <p>See <a href="https://docs.python.org/3/library/re.html#module-contents">Python’s re module documentation</a> for more details.</p>
-<div id="cc483a67" class="cell" data-execution_count="3">
+<div id="3ab5b8c0" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Common regex functions: search, match, findall, sub</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Email pattern explanation:</span></span>
@@ -395,7 +395,7 @@ Full date: 2023-06-30
 <h4 class="anchored" data-anchor-id="practical-example-data-extraction">Practical Example: Data Extraction</h4>
 <p><strong>Problem Statement</strong>: We need to extract error messages from a log file and analyze the frequency of different log types.</p>
 <p><strong>Approach</strong>: 1. Define regex patterns to match log entries 2. Use capturing groups to extract relevant information (timestamp, message) 3. Analyze the extracted data</p>
-<div id="e74c56cd" class="cell" data-execution_count="4">
+<div id="af75296f" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>log_data <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">2023-06-15 08:24:32 INFO Server started successfully</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">2023-06-15 08:25:47 WARNING Disk space at 85%</span></span>
@@ -431,8 +431,8 @@ Full date: 2023-06-30
 
 Log type counts:
 INFO: 2
-ERROR: 2
-WARNING: 1</code></pre>
+WARNING: 1
+ERROR: 2</code></pre>
 </div>
 </div>
 

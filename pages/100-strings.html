@@ -222,7 +222,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Let’s start with a quick refresher on some powerful string methods you may not use every day. For comprehensive documentation on Python strings, see the <a href="https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str">Python String Documentation</a>.</p>
-<div id="90a5fdce" class="cell" data-execution_count="1">
+<div id="41604d3b" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># String Methods Review</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sample_text <span class="op">=</span> <span class="st">"The quick brown fox jumps over the lazy dog"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -235,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Joined with dashes: The-quick-brown-fox-jumps-over-the-lazy-dog</code></pre>
 </div>
 </div>
-<div id="3973f9fe" class="cell" data-execution_count="2">
+<div id="5c0be343" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Case manipulation</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Case manipulation:"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Title case:"</span>, sample_text.title()) <span class="co">#The title method converts the first character of each word to uppercase and the remaining characters to lowercase.</span></span>
@@ -247,7 +247,7 @@ Title case: The Quick Brown Fox Jumps Over The Lazy Dog
 Swapped case: tHE QUICK BROWN FOX JUMPS OVER THE LAZY DOG</code></pre>
 </div>
 </div>
-<div id="0c4aa92d" class="cell" data-execution_count="3">
+<div id="d8915db8" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Finding and counting</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Finding and counting:"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"'the' appears at index:"</span>, sample_text.lower().find(<span class="st">"the"</span>)) <span class="co">#The find method tells you where a substring appears in a string, or returns -1 if it isn't there.</span></span>
@@ -259,7 +259,7 @@ Finding and counting:
 'the' appears 2 times</code></pre>
 </div>
 </div>
-<div id="89866edc" class="cell" data-execution_count="4">
+<div id="8a7487c5" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stripping and replacing</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>padded_text <span class="op">=</span> <span class="st">"   </span><span class="ch">\t</span><span class="st">  spaces around   </span><span class="ch">\n</span><span class="st">"</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Stripped text:"</span>, padded_text.strip()) <span class="co">#The strip method removes specified characters (spaces by default) from the beginning and end of a string.</span></span>
@@ -278,7 +278,7 @@ Replacing: The quick brown cat jumps over the lazy dog</code></pre>
 <li>Remove punctuation that might interfere with word analysis</li>
 <li>Normalize whitespace to standardize the text</li>
 </ol>
-<div id="8afaa956" class="cell" data-execution_count="5">
+<div id="f4d70b85" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_text(text):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Simple preprocessing function for text analysis"""</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert to lowercase</span></span>
@@ -307,7 +307,7 @@ Preprocessed: hello world this is a sample text with some punctuation</code></pr
 <h4 class="anchored" data-anchor-id="f-strings-and-formatting">F-strings and Formatting</h4>
 <p>F-strings (introduced in Python 3.6) make string formatting much more readable. The syntax <code>f"...{variable}..."</code> allows embedding expressions inside string literals.</p>
 <p>For more details, see the <a href="https://docs.python.org/3/reference/lexical_analysis.html#f-strings">Python f-string documentation</a>.</p>
-<div id="0a173d76" class="cell" data-execution_count="6">
+<div id="4e993566" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> <span class="st">"Python"</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>version <span class="op">=</span> <span class="fl">3.11</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="dv">32</span></span>
