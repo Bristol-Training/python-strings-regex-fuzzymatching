@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Regular Expressions (Regex) – Introduction to Strings, Regex, and Fuzzy Matching in Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../pages/300-fuzzy-matching.html" rel="next">
+<link href="../pages/100-strings.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/200-regex.html">Regular Expressions (Regex)</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../assets/UoB_RGB_24.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Introduction to Strings, Regex, and Fuzzy Matching in Python</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/000-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/100-strings.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Strings: Beyond the Basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/200-regex.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Regular Expressions (Regex)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/300-fuzzy-matching.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fuzzy String Matching</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/400-combined-techniques.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combined Techniques: Putting It All Together</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/600-exercises.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercises</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/990-summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary and Best Practices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/999-contributors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Contributors</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#fuzzy-string-matching" id="toc-fuzzy-string-matching" class="nav-link active" data-scroll-target="#fuzzy-string-matching">3. Fuzzy String Matching</a></li>
+  <li><a href="#levenshtein-distance" id="toc-levenshtein-distance" class="nav-link" data-scroll-target="#levenshtein-distance">Levenshtein Distance</a></li>
+  <li><a href="#tokenization" id="toc-tokenization" class="nav-link" data-scroll-target="#tokenization">Tokenization</a></li>
+  <li><a href="#key-differences-from-ratio" id="toc-key-differences-from-ratio" class="nav-link" data-scroll-target="#key-differences-from-ratio">Key Differences from <code>ratio()</code></a></li>
+  <li><a href="#use-case" id="toc-use-case" class="nav-link" data-scroll-target="#use-case">Use Case:</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example:</a></li>
+  <li><a href="#partial-matching" id="toc-partial-matching" class="nav-link" data-scroll-target="#partial-matching">Partial Matching:</a>
+  <ul class="collapse">
+  <li><a href="#combined-techniques-putting-it-all-together" id="toc-combined-techniques-putting-it-all-together" class="nav-link" data-scroll-target="#combined-techniques-putting-it-all-together">4. Combined Techniques: Putting It All Together</a></li>
+  <li><a href="#summary-and-best-practices" id="toc-summary-and-best-practices" class="nav-link" data-scroll-target="#summary-and-best-practices">5. Summary and Best Practices</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">6. Exercises</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/uob-training/introduction-to-git-and-github/edit/main/pages/200-regex.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/uob-training/introduction-to-git-and-github/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Regular Expressions (Regex)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Regular expressions allow for powerful pattern matching within strings. Python’s <code>re</code> module provides regex functionality.</p>
+<section id="regex-reference" class="level4">
+<h4 class="anchored" data-anchor-id="regex-reference">Regex Reference</h4>
+<p>Here’s a quick reference of common regex patterns:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Pattern</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>\d</code></td>
+<td>Digit (0-9)</td>
+</tr>
+<tr class="even">
+<td><code>\w</code></td>
+<td>Word character (a-z, A-Z, 0-9, _)</td>
+</tr>
+<tr class="odd">
+<td><code>\s</code></td>
+<td>Whitespace</td>
+</tr>
+<tr class="even">
+<td><code>\b</code></td>
+<td>Word boundary</td>
+</tr>
+<tr class="odd">
+<td><code>[abc]</code></td>
+<td>Any character in brackets</td>
+</tr>
+<tr class="even">
+<td><code>[^abc]</code></td>
+<td>Any character not in brackets</td>
+</tr>
+<tr class="odd">
+<td><code>a*</code></td>
+<td>Zero or more ‘a’</td>
+</tr>
+<tr class="even">
+<td><code>a+</code></td>
+<td>One or more ‘a’</td>
+</tr>
+<tr class="odd">
+<td><code>a?</code></td>
+<td>Zero or one ‘a’</td>
+</tr>
+<tr class="even">
+<td><code>a{3}</code></td>
+<td>Exactly 3 ‘a’</td>
+</tr>
+<tr class="odd">
+<td><code>a{2,4}</code></td>
+<td>2 to 4 ‘a’</td>
+</tr>
+<tr class="even">
+<td><code>()</code></td>
+<td>Capture group</td>
+</tr>
+<tr class="odd">
+<td><code>a|b</code></td>
+<td>Match ‘a’ or ‘b’</td>
+</tr>
+</tbody>
+</table>
+<p>For the full regex documentation, see the <a href="https://docs.python.org/3/library/re.html">Python Regex Documentation</a> and try out patterns at <a href="https://regex101.com/">Regex101</a> - an interactive regex tester.</p>
+<div id="41ddb7fe" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic pattern matching</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"The rainfall was 25.5 mm on Monday and 32.7 mm on Tuesday."</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Find all numbers (including decimals)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># \d+ matches one or more digits</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># \.? matches an optional decimal point</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># \d* matches zero or more digits after the decimal point</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>numbers <span class="op">=</span> re.findall(<span class="vs">r'\d+\.?\d*'</span>, text)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Numbers found:"</span>, numbers)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Find all words that start with capital letters</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># \b is a word boundary</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># [A-Z] matches any capital letter</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># [a-z]* matches zero or more lowercase letters</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># \b is another word boundary to end the word</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>capitals <span class="op">=</span> re.findall(<span class="vs">r'\b[A-Z][a-z]*\b'</span>, text)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Capitalized words:"</span>, capitals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Numbers found: ['25.5', '32.7']
+Capitalized words: ['The', 'Monday', 'Tuesday']</code></pre>
+</div>
+</div>
+<p>Regex are easy to get wrong, so it’s good to write little test cases where you know what the answer should be to make sure your code is working correctly:</p>
+<div id="97f01cd5" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>testtext <span class="op">=</span> <span class="st">"Here are Some words some Start With capital letters"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>capitals <span class="op">=</span> re.findall(<span class="vs">r'\b[A-Z][a-z]*\b'</span>, testtext)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> capitals <span class="op">==</span> [<span class="st">"Here"</span>, <span class="st">"Some"</span>, <span class="st">"Start"</span>, <span class="st">"With"</span>], <span class="st">"Error your output should have been "</span> <span class="op">+</span> <span class="bu">str</span>(capitals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="regex-patterns-and-methods" class="level4">
+<h4 class="anchored" data-anchor-id="regex-patterns-and-methods">Regex Patterns and Methods</h4>
+<p>Let’s explore more regex functionality with practical examples. The <code>re</code> module provides several key functions:</p>
+<ul>
+<li><code>re.search()</code>: Finds the first match of a pattern</li>
+<li><code>re.findall()</code>: Finds all non-overlapping matches</li>
+<li><code>re.sub()</code>: Substitutes matching patterns with a replacement</li>
+<li><code>re.compile()</code>: Compiles a regex pattern for reuse</li>
+<li><code>re.finditer()</code>: Returns an iterator of match objects</li>
+</ul>
+<p>See <a href="https://docs.python.org/3/library/re.html#module-contents">Python’s re module documentation</a> for more details.</p>
+<div id="3175946a" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Common regex functions: search, match, findall, sub</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Email pattern explanation:</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># [\w\.-]+ - one or more word characters, dots, or hyphens (username)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># @ - literal @ symbol</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># [\w\.-]+ - one or more word characters, dots, or hyphens (domain name)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># \. - literal dot</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># [a-zA-Z]{2,} - two or more letters (top-level domain)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>email_pattern <span class="op">=</span> <span class="vs">r'[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}'</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"Contact us at info@example.com or support@company.co.uk for assistance."</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># search finds first match</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>match <span class="op">=</span> re.search(email_pattern, text)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> match:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"First email found: </span><span class="sc">{</span>match<span class="sc">.</span>group()<span class="sc">}</span><span class="ss"> at position </span><span class="sc">{</span>match<span class="sc">.</span>start()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># findall gets all matches</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>emails <span class="op">=</span> re.findall(email_pattern, text)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"All emails: </span><span class="sc">{</span>emails<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># sub replaces matches</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>redacted <span class="op">=</span> re.sub(email_pattern, <span class="st">"[EMAIL REDACTED]"</span>, text)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Redacted text: </span><span class="sc">{</span>redacted<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Capturing groups with ()</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>date_text <span class="op">=</span> <span class="st">"Important dates: 2023-04-15, 2023-05-22, and 2023-06-30."</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Date pattern breakdown:</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># (\d{4}) - capturing group for 4 digits (year)</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># - - literal hyphen</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co"># (\d{2}) - capturing group for 2 digits (month)</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co"># - - literal hyphen</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co"># (\d{2}) - capturing group for 2 digits (day)</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>date_pattern <span class="op">=</span> <span class="vs">r'(\d</span><span class="sc">{4}</span><span class="vs">)-(\d</span><span class="sc">{2}</span><span class="vs">)-(\d</span><span class="sc">{2}</span><span class="vs">)'</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> match <span class="kw">in</span> re.finditer(date_pattern, date_text):</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Full date: </span><span class="sc">{</span>match<span class="sc">.</span>group(<span class="dv">0</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Year: </span><span class="sc">{</span>match<span class="sc">.</span>group(<span class="dv">1</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Month: </span><span class="sc">{</span>match<span class="sc">.</span>group(<span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Day: </span><span class="sc">{</span>match<span class="sc">.</span>group(<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>First email found: info@example.com at position 14
+All emails: ['info@example.com', 'support@company.co.uk']
+Redacted text: Contact us at [EMAIL REDACTED] or [EMAIL REDACTED] for assistance.
+Full date: 2023-04-15
+  Year: 2023
+  Month: 04
+  Day: 15
+Full date: 2023-05-22
+  Year: 2023
+  Month: 05
+  Day: 22
+Full date: 2023-06-30
+  Year: 2023
+  Month: 06
+  Day: 30</code></pre>
+</div>
+</div>
+</section>
+<section id="practical-example-data-extraction" class="level4">
+<h4 class="anchored" data-anchor-id="practical-example-data-extraction">Practical Example: Data Extraction</h4>
+<p><strong>Problem Statement</strong>: We need to extract error messages from a log file and analyze the frequency of different log types.</p>
+<p><strong>Approach</strong>: 1. Define regex patterns to match log entries 2. Use capturing groups to extract relevant information (timestamp, message) 3. Analyze the extracted data</p>
+<div id="7da0ea34" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>log_data <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">2023-06-15 08:24:32 INFO Server started successfully</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">2023-06-15 08:25:47 WARNING Disk space at 85%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">2023-06-15 08:30:15 ERROR Failed to connect to database: timeout</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">2023-06-15 08:35:22 INFO User admin logged in</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">2023-06-15 08:40:13 ERROR Authentication failed for user guest</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract error messages</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Pattern breakdown:</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) - capture the timestamp</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ERROR - match the ERROR log level</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># (.*) - capture the rest of the line (the error message)</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>error_pattern <span class="op">=</span> <span class="vs">r'(\d</span><span class="sc">{4}</span><span class="vs">-\d</span><span class="sc">{2}</span><span class="vs">-\d</span><span class="sc">{2}</span><span class="vs"> \d</span><span class="sc">{2}</span><span class="vs">:\d</span><span class="sc">{2}</span><span class="vs">:\d</span><span class="sc">{2}</span><span class="vs">) ERROR (.*)'</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> re.findall(error_pattern, log_data)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Error log entries:"</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> timestamp, message <span class="kw">in</span> errors:</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"[</span><span class="sc">{</span>timestamp<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>message<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Count log types</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Pattern breakdown:</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co"># space followed by INFO, </span><span class="al">WARNING</span><span class="co">, or ERROR</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>log_types <span class="op">=</span> re.findall(<span class="vs">r' (INFO|WARNING|ERROR) '</span>, log_data)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Log type counts:"</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> log_type <span class="kw">in</span> <span class="bu">set</span>(log_types):</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> log_types.count(log_type)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>log_type<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Error log entries:
+[2023-06-15 08:30:15] Failed to connect to database: timeout
+[2023-06-15 08:40:13] Authentication failed for user guest
+
+Log type counts:
+WARNING: 1
+ERROR: 2
+INFO: 2</code></pre>
+</div>
+</div>
+</section>
+<section id="fuzzy-string-matching" class="level3">
+<h3 class="anchored" data-anchor-id="fuzzy-string-matching">3. Fuzzy String Matching</h3>
+<p>Sometimes we need to find approximate matches rather than exact patterns. This is where fuzzy matching comes in.</p>
+<p>Let’s install the necessary library first. It’s recommended to do this in a virtual environment to keep your dependencies isolated.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a virtual environment (recommended)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> fuzzy_matching</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Activate the environment</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate fuzzy_matching</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {#938e677f .cell execution_count=5}</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span> <span class="ex">{.python</span> .cell-code}</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required package</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Uncomment and run this cell if needed</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install fuzzywuzzy python-Levenshtein</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>:::</p>
+<section id="introduction-to-fuzzy-matching" class="level4">
+<h4 class="anchored" data-anchor-id="introduction-to-fuzzy-matching">Introduction to Fuzzy Matching</h4>
+<p>Fuzzy matching measures the similarity between strings. The <code>fuzzywuzzy</code> library provides several similarity metrics:</p>
+<ul>
+<li><code>ratio</code>: Simple string similarity based on Levenshtein distance</li>
+<li><code>partial_ratio</code>: Similarity of the best matching substring</li>
+<li><code>token_sort_ratio</code>: Similarity after sorting tokens (words)</li>
+<li><code>token_set_ratio</code>: Similarity based on unique tokens, regardless of order</li>
+</ul>
+<p>For more information, see the <a href="https://github.com/seatgeek/fuzzywuzzy">FuzzyWuzzy GitHub repository</a>.</p>
+<div id="8de21e10" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fuzzywuzzy <span class="im">import</span> fuzz, process</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic similarity scores</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>s1 <span class="op">=</span> <span class="st">"Python Programming"</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>s2 <span class="op">=</span> <span class="st">"programming python"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>s3 <span class="op">=</span> <span class="st">"Pythn Programing"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>s4 <span class="op">=</span> <span class="st">"Java Programming"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>fuzzywuzzy.ratio()</code> method is a function within the FuzzyWuzzy Python library that calculates the similarity between two strings.</p>
+</section>
+</section>
+<section id="levenshtein-distance" class="level2">
+<h2 class="anchored" data-anchor-id="levenshtein-distance">Levenshtein Distance</h2>
+<p>At its core, it utilizes the Levenshtein distance, which measures the minimum number of single-character edits (insertions, deletions, or substitutions) required to change one string into the other. &nbsp;</p>
+<ul>
+<li>Similarity Score: The <code>ratio()</code> method then translates this distance into a similarity score, expressed as a percentage between 0 and 100. A score of 100 indicates a perfect match.</li>
+<li>Purpose: It’s designed to handle situations where strings might not be exactly identical due to typos, variations in spelling, or other minor differences.</li>
+<li>How it works: Essentially it takes the two strings, and then calculates the Levenshtein distance. That distance is then used in a calculation to return a number between 0 and 100, that represents how similar the two strings are.</li>
+</ul>
+<p>In essence, <code>fuzzywuzzy.ratio()</code> provides a quick and effective way to quantify the likeness of two strings.</p>
+<div id="aef6bb94" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple ratio - Character-based similarity</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"How similar are `</span><span class="sc">{</span>s1<span class="sc">}</span><span class="ss">` and `</span><span class="sc">{</span>s2<span class="sc">}</span><span class="ss">`?"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Simple ratio: </span><span class="sc">{</span>fuzz<span class="sc">.</span>ratio(s1.lower(), s2.lower())<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>How similar are `Python Programming` and `programming python`?
+Simple ratio: 61</code></pre>
+</div>
+</div>
+<p>The <code>fuzzywuzzy.token_sort_ratio()</code> method is another similarity scoring function within the FuzzyWuzzy library, designed to handle cases where strings have the same words but in a different order.</p>
+</section>
+<section id="tokenization" class="level2">
+<h2 class="anchored" data-anchor-id="tokenization">Tokenization</h2>
+<p>First, it splits the input strings into individual words (tokens). # Sorting Then, it sorts these tokens alphabetically. # String Reconstruction The sorted tokens are then joined back into strings. # Ratio Calculation Finally, it calculates the simple ratio() between these sorted strings, effectively ignoring word order.</p>
+</section>
+<section id="key-differences-from-ratio" class="level2">
+<h2 class="anchored" data-anchor-id="key-differences-from-ratio">Key Differences from <code>ratio()</code></h2>
+<ul>
+<li><code>ratio()</code> is sensitive to word order.</li>
+<li><code>token_sort_ratio()</code> is insensitive to word order.</li>
+</ul>
+</section>
+<section id="use-case" class="level2">
+<h2 class="anchored" data-anchor-id="use-case">Use Case:</h2>
+<p>This method is particularly useful when comparing strings where the word order might vary, such as addresses, names with titles, or phrases with slight rearrangements.</p>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example:</h2>
+<p>“New York Mets” and “Mets New York” would have a low <code>ratio()</code> score because of the different word order. However, they would have a perfect <code>token_sort_ratio()</code> score of 100 because the words are the same, just in a different order.</p>
+<p>In summary, <code>token_sort_ratio()</code> prioritizes the presence of the same words, regardless of their sequence, by sorting the tokens before calculating the similarity.</p>
+<div id="b70d54f0" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Token sort ratio - Word-based similarity after sorting</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Token sort ratio: </span><span class="sc">{</span>fuzz<span class="sc">.</span>token_sort_ratio(s1.lower(), s2.lower())<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Token sort ratio: 100</code></pre>
+</div>
+</div>
+<p>The <code>fuzzywuzzy.partial_ratio()</code> method is designed to find the best partial match between two strings.</p>
+</section>
+<section id="partial-matching" class="level2">
+<h2 class="anchored" data-anchor-id="partial-matching">Partial Matching:</h2>
+<p>Unlike <code>fuzz.ratio()</code>, which compares the entire strings, <code>partial_ratio()</code> looks for the best substring match. This is particularly useful when one string is much longer than the other, and you’re interested in whether the shorter string exists within the longer one. # Substring Comparison: It essentially takes the shorter string and compares it to all possible substrings of the same length within the longer string. It then returns the highest similarity score found among those substring comparisons. # Use Cases: This is very helpful in situations like: Comparing a short address snippet to a full address. Finding a name within a longer text string. Searching for a product name inside of a much longer product description. # Key points: It focuses on finding if a smaller string is contained inside of a larger string. It returns the highest ratio of similarity found when comparing the smaller string to all possible substrings of the larger string.</p>
+<p>In essence, <code>partial_ratio()</code> helps identify partial string matches, making it robust for cases where exact string equality is not expected.</p>
+<div id="85c6e785" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Partial ratio - Best substring match</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Partial ratio: </span><span class="sc">{</span>fuzz<span class="sc">.</span>partial_ratio(s1.lower(), s2.lower())<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Partial ratio: 61</code></pre>
+</div>
+</div>
+<div id="42bc482b" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Comparing multiple strings to 'Python Programming':"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> [s2, s3, s4]:</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>s<span class="sc">!r}</span><span class="ss">: </span><span class="sc">{</span>fuzz<span class="sc">.</span>ratio(s1.lower(), s.lower())<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Comparing multiple strings to 'Python Programming':
+'programming python': 61
+'Pythn Programing': 94
+'Java Programming': 71</code></pre>
+</div>
+</div>
+<section id="finding-best-matches-in-a-list" class="level4">
+<h4 class="anchored" data-anchor-id="finding-best-matches-in-a-list">Finding Best Matches in a List</h4>
+<p><strong>Problem</strong>: We need to find the closest matches to user input that may contain typos.</p>
+<p><strong>Approach</strong>: 1. Define a list of correct terms (fruits in this case) 2. For each user query (potentially with typos), find the closest matches 3. Rank matches by similarity score</p>
+<div id="67af28cd" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Finding the closest match in a list</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>fruits <span class="op">=</span> [<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span>, <span class="st">"strawberry"</span>, <span class="st">"blueberry"</span>, <span class="st">"blackberry"</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample user inputs with typos</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>queries <span class="op">=</span> [<span class="st">"aple"</span>, <span class="st">"banan"</span>, <span class="st">"blckberry"</span>, <span class="st">"strawbery"</span>]</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> query <span class="kw">in</span> queries:</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Query: </span><span class="sc">{</span>query<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get top 2 matches with scores using process.extract</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This function takes:</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - The query string</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - A list of choices to match against</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - limit: number of results to return</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    matches <span class="op">=</span> process.extract(query, fruits, limit<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> match, score <span class="kw">in</span> matches:</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Match: </span><span class="sc">{</span>match<span class="sc">}</span><span class="ss">, Score: </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get the single best match using process.extractOne</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Returns a tuple of (best_match, score)</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    best_match <span class="op">=</span> process.extractOne(query, fruits)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Best match: </span><span class="sc">{</span>best_match[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> (Score: </span><span class="sc">{</span>best_match[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">)</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Query: aple
+  Match: apple, Score: 89
+  Match: orange, Score: 45
+  Best match: apple (Score: 89)
+
+Query: banan
+  Match: banana, Score: 91
+  Match: orange, Score: 36
+  Best match: banana (Score: 91)
+
+Query: blckberry
+  Match: blackberry, Score: 95
+  Match: blueberry, Score: 78
+  Best match: blackberry (Score: 95)
+
+Query: strawbery
+  Match: strawberry, Score: 95
+  Match: blackberry, Score: 53
+  Best match: strawberry (Score: 95)
+</code></pre>
+</div>
+</div>
+</section>
+<section id="practical-example-deduplicating-user-entry-data" class="level4">
+<h4 class="anchored" data-anchor-id="practical-example-deduplicating-user-entry-data">Practical Example: Deduplicating User Entry Data</h4>
+<p><strong>Problem Statement</strong>: We have a list of city names entered by users that may contain duplicates with slight variations (e.g., “New York” vs “NYC”). We need to identify potential duplicates.</p>
+<p><strong>Approach</strong>: 1. Define a function to detect similar items using fuzzy matching 2. Compare each pair of cities and calculate similarity 3. Identify pairs with similarity above a certain threshold</p>
+<div id="15634ea2" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Deduplicating user-entered data</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cities <span class="op">=</span> [</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"New York"</span>, <span class="st">"New York City"</span>, <span class="st">"NYC"</span>, <span class="st">"San Francisco"</span>, <span class="st">"San Fransisco"</span>,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sanfran"</span>, <span class="st">"Los Angeles"</span>, <span class="st">"LA"</span>, <span class="st">"Los Angles"</span>, <span class="st">"Chicago"</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_duplicates(items, threshold<span class="op">=</span><span class="dv">80</span>):</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Find potential duplicates in a list based on fuzzy matching</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">        items: List of strings to check for duplicates</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">        threshold: Minimum similarity score (0-100) to consider as duplicate</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co">        </span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">        List of tuples (item1, item2, similarity_score)</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    duplicates <span class="op">=</span> []</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check each pair of items</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, item1 <span class="kw">in</span> <span class="bu">enumerate</span>(items):</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j, item2 <span class="kw">in</span> <span class="bu">enumerate</span>(items[i<span class="op">+</span><span class="dv">1</span>:], i<span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Use token_sort_ratio for better matching of different word orders</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>            similarity <span class="op">=</span> fuzz.token_sort_ratio(item1.lower(), item2.lower())</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> similarity <span class="op">&gt;=</span> threshold:</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>                duplicates.append((item1, item2, similarity))</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> duplicates</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Find potential duplicates</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>potential_dupes <span class="op">=</span> find_duplicates(cities)</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Potential duplicate cities:"</span>)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item1, item2, score <span class="kw">in</span> potential_dupes:</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>item1<span class="sc">}</span><span class="ss"> ⟷ </span><span class="sc">{</span>item2<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">%"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Potential duplicate cities:
+San Francisco ⟷ San Fransisco: 92%
+Los Angeles ⟷ Los Angles: 95%</code></pre>
+</div>
+</div>
+</section>
+<section id="combined-techniques-putting-it-all-together" class="level3">
+<h3 class="anchored" data-anchor-id="combined-techniques-putting-it-all-together">4. Combined Techniques: Putting It All Together</h3>
+<p>Let’s solve a practical problem that combines strings, regex, and fuzzy matching.</p>
+<p><strong>Problem Statement</strong>: We have a dataset of product descriptions that may refer to the same product but with different wording or formatting. We need to: 1. Clean and normalize the product descriptions 2. Group similar products together</p>
+<p><strong>Approach</strong>: 1. <strong>Analyze the data</strong>: Notice what varies between similar product descriptions (order of words, extra information in parentheses, spacing around storage values) 2. <strong>Normalize the text</strong>: Create a standard format to make comparison easier 3. <strong>Compare the normalized descriptions</strong>: Use fuzzy matching to find similar products 4. <strong>Group the results</strong>: Place similar products together</p>
+<section id="step-1-understand-and-normalize-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-understand-and-normalize-the-data">Step 1: Understand and Normalize the Data</h4>
+<div id="eccc7b77" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scenario: Cleaning and matching product descriptions</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fuzzywuzzy <span class="im">import</span> fuzz</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample data: Product descriptions</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>products <span class="op">=</span> [</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Samsung Galaxy S21 5G 128GB Smartphone (Unlocked)"</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Samsung Galaxy S21 Ultra 256GB 5G Phone"</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Samsung S21 5G 128 GB"</span>,</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"iPhone 13 Pro Max 256GB - Graphite"</span>,</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Apple iPhone 13 Pro Max (256 GB, Graphite)"</span>,</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"iPhone13 Pro 256GB"</span>,</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Google Pixel 6 Pro 128GB - Stormy Black"</span>,</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pixel 6 Pro (128 GB) Stormy Black color"</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="f40124cd" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_product_text(text):</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Clean and normalize product text for better matching"""</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1: Convert to lowercase for case-insensitive comparison</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> text.lower()</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 2: Remove parentheses and their contents (often optional info)</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'\([^)]*\)'</span>, <span class="st">''</span>, text)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 3: Remove punctuation and standardize spacing</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'[^\w\s]'</span>, <span class="st">' '</span>, text)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 4: Standardize storage notation (e.g., 128GB, 128 GB -&gt; 128gb)</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'(\d+)\s*gb'</span>, <span class="vs">r'\1gb'</span>, text)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 5: Remove common filler words that don't help identify products</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'\b(smartphone|phone|color|unlocked)\b'</span>, <span class="st">''</span>, text)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 6: Normalize whitespace for clean comparison</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="st">' '</span>.join(text.split())</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="54728646" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize all products</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>normalized_products <span class="op">=</span> [normalize_product_text(p) <span class="cf">for</span> p <span class="kw">in</span> products]</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Original vs. Normalized:"</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> original, normalized <span class="kw">in</span> <span class="bu">zip</span>(products, normalized_products):</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Original: </span><span class="sc">{</span>original<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Normalized: </span><span class="sc">{</span>normalized<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Original vs. Normalized:
+Original: Samsung Galaxy S21 5G 128GB Smartphone (Unlocked)
+Normalized: samsung galaxy s21 5g 128gb
+
+Original: Samsung Galaxy S21 Ultra 256GB 5G Phone
+Normalized: samsung galaxy s21 ultra 256gb 5g
+
+Original: Samsung S21 5G 128 GB
+Normalized: samsung s21 5g 128gb
+
+Original: iPhone 13 Pro Max 256GB - Graphite
+Normalized: iphone 13 pro max 256gb graphite
+
+Original: Apple iPhone 13 Pro Max (256 GB, Graphite)
+Normalized: apple iphone 13 pro max
+
+Original: iPhone13 Pro 256GB
+Normalized: iphone13 pro 256gb
+
+Original: Google Pixel 6 Pro 128GB - Stormy Black
+Normalized: google pixel 6 pro 128gb stormy black
+
+Original: Pixel 6 Pro (128 GB) Stormy Black color
+Normalized: pixel 6 pro stormy black
+</code></pre>
+</div>
+</div>
+</section>
+<section id="step-2-group-similar-products-using-fuzzy-matching" class="level4">
+<h4 class="anchored" data-anchor-id="step-2-group-similar-products-using-fuzzy-matching">Step 2: Group Similar Products Using Fuzzy Matching</h4>
+<div id="cb5bfceb" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group similar products</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> group_similar_products(products, normalized_products, threshold<span class="op">=</span><span class="dv">80</span>):</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Group similar products based on fuzzy matching"""</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    groups <span class="op">=</span> []</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    used_indices <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1: Iterate through each product</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, norm_p1 <span class="kw">in</span> <span class="bu">enumerate</span>(normalized_products):</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="kw">in</span> used_indices:</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 2: Start a new group with this product</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>        group <span class="op">=</span> [products[i]]</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>        used_indices.add(i)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 3: Find similar products by comparing with all others</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j, norm_p2 <span class="kw">in</span> <span class="bu">enumerate</span>(normalized_products):</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> j <span class="op">!=</span> i <span class="kw">and</span> j <span class="kw">not</span> <span class="kw">in</span> used_indices:</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Step 4: Use token_set_ratio to handle different word orders</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>                <span class="co"># and partial matches (this is key for product description matching!)</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>                similarity <span class="op">=</span> fuzz.token_set_ratio(norm_p1, norm_p2)</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Step 5: If similarity exceeds our threshold, consider it a match</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> similarity <span class="op">&gt;=</span> threshold:</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>                    group.append(products[j])</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>                    used_indices.add(j)</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 6: Add this group to our collection</span></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>        groups.append(group)</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> groups</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="c3f1c56b" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group similar products</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>similar_groups <span class="op">=</span> group_similar_products(products, normalized_products)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Similar Product Groups:"</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, group <span class="kw">in</span> <span class="bu">enumerate</span>(similar_groups, <span class="dv">1</span>):</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Group </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> product <span class="kw">in</span> group:</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>product<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Similar Product Groups:
+
+Group 1:
+  - Samsung Galaxy S21 5G 128GB Smartphone (Unlocked)
+  - Samsung Galaxy S21 Ultra 256GB 5G Phone
+  - Samsung S21 5G 128 GB
+
+Group 2:
+  - iPhone 13 Pro Max 256GB - Graphite
+  - Apple iPhone 13 Pro Max (256 GB, Graphite)
+
+Group 3:
+  - iPhone13 Pro 256GB
+
+Group 4:
+  - Google Pixel 6 Pro 128GB - Stormy Black
+  - Pixel 6 Pro (128 GB) Stormy Black color</code></pre>
+</div>
+</div>
+</section>
+<section id="key-problem-solving-takeaways" class="level4">
+<h4 class="anchored" data-anchor-id="key-problem-solving-takeaways">Key Problem-Solving Takeaways:</h4>
+<ol type="1">
+<li><strong>Break complex problems into steps</strong>: We separated normalization from grouping</li>
+<li><strong>Preprocess data before comparison</strong>: Normalization makes matching more effective</li>
+<li><strong>Choose appropriate algorithms</strong>: <code>token_set_ratio</code> works better than basic string comparison for product descriptions</li>
+<li><strong>Use parameters to control behavior</strong>: The threshold value lets us adjust how strict the matching is</li>
+<li><strong>Manage already-processed data</strong>: The <code>used_indices</code> set prevents duplicate grouping</li>
+</ol>
+<p>Try modifying the <code>threshold</code> parameter to see how it affects the grouping results!</p>
+</section>
+</section>
+<section id="summary-and-best-practices" class="level3">
+<h3 class="anchored" data-anchor-id="summary-and-best-practices">5. Summary and Best Practices</h3>
+<section id="when-to-use-each-technique" class="level4">
+<h4 class="anchored" data-anchor-id="when-to-use-each-technique">When to use each technique:</h4>
+<ol type="1">
+<li><strong>String Methods</strong>: Best for simple operations on well-structured text
+<ul>
+<li>Splitting, joining, case changes, simple replacements</li>
+<li>Fast and built-in to Python</li>
+</ul></li>
+<li><strong>Regular Expressions</strong>: Best for pattern matching and extraction
+<ul>
+<li>When you need to find or replace text that follows specific patterns</li>
+<li>Extracting structured data from text</li>
+<li>Validating formats (emails, phone numbers, etc.)</li>
+</ul></li>
+<li><strong>Fuzzy Matching</strong>: Best for comparing similar but not identical strings
+<ul>
+<li>Handling user input with typos or variations</li>
+<li>Deduplicating data where entries might differ slightly</li>
+<li>Searching for approximate matches</li>
+</ul></li>
+</ol>
+</section>
+<section id="performance-considerations" class="level4">
+<h4 class="anchored" data-anchor-id="performance-considerations">Performance Considerations:</h4>
+<ul>
+<li>String methods are fastest</li>
+<li>Regex is powerful but can be slower for complex patterns</li>
+<li>Fuzzy matching is the most computationally intensive</li>
+<li>Precompile regex patterns when reusing them</li>
+<li>Normalize strings before comparison to improve match quality</li>
+</ul>
+</section>
+<section id="further-learning-resources" class="level4">
+<h4 class="anchored" data-anchor-id="further-learning-resources">Further Learning Resources:</h4>
+<ul>
+<li><a href="https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str">Python String Documentation</a></li>
+<li><a href="https://docs.python.org/3/library/re.html">Python Regex Documentation</a></li>
+<li><a href="https://regex101.com/">Regex101</a> - Interactive regex tester</li>
+<li><a href="https://github.com/seatgeek/fuzzywuzzy">FuzzyWuzzy Documentation</a></li>
+</ul>
+</section>
+</section>
+<section id="exercises" class="level3">
+<h3 class="anchored" data-anchor-id="exercises">6. Exercises</h3>
+<p>Try these exercises to practice what you’ve learned:</p>
+<ol type="1">
+<li>Extract all URLs from a text document using regex</li>
+<li>Create a function to normalize company names for deduplication</li>
+<li>Implement a simple spell checker using fuzzy matching and a dictionary</li>
+<li>Write a regex to validate password strength based on common criteria</li>
+<li>Create a function that can extract structured data (like addresses) from unstructured text</li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../pages/100-strings.html" class="pagination-link" aria-label="Python Strings: Beyond the Basics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Python Strings: Beyond the Basics</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../pages/300-fuzzy-matching.html" class="pagination-link" aria-label="Fuzzy String Matching">
+        <span class="nav-page-text">Fuzzy String Matching</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><a href="https://www.bristol.ac.uk/golding/">Jean Golding Institute</a> © <a href="http://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/uob-training/introduction-to-git-and-github/edit/main/pages/200-regex.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/uob-training/introduction-to-git-and-github/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
