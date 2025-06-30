@@ -222,11 +222,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Let’s solve a practical problem that combines strings, regex, and fuzzy matching.</p>
-<p><strong>Problem Statement</strong>: We have a dataset of product descriptions that may refer to the same product but with different wording or formatting. We need to: 1. Clean and normalize the product descriptions 2. Group similar products together</p>
-<p><strong>Approach</strong>: 1. <strong>Analyze the data</strong>: Notice what varies between similar product descriptions (order of words, extra information in parentheses, spacing around storage values) 2. <strong>Normalize the text</strong>: Create a standard format to make comparison easier 3. <strong>Compare the normalized descriptions</strong>: Use fuzzy matching to find similar products 4. <strong>Group the results</strong>: Place similar products together</p>
+<p><strong>Problem Statement</strong>: We have a dataset of product descriptions that may refer to the same product but with different wording or formatting. We need to:</p>
+<ol type="1">
+<li>Clean and normalize the product descriptions</li>
+<li>Group similar products together</li>
+</ol>
+<p><strong>Approach</strong>:</p>
+<ol type="1">
+<li><strong>Analyze the data</strong>: Notice what varies between similar product descriptions (order of words, extra information in parentheses, spacing around storage values)</li>
+<li><strong>Normalize the text</strong>: Create a standard format to make comparison easier</li>
+<li><strong>Compare the normalized descriptions</strong>: Use fuzzy matching to find similar products</li>
+<li><strong>Group the results</strong>: Place similar products together</li>
+</ol>
 <section id="step-1-understand-and-normalize-the-data" class="level4">
 <h4 class="anchored" data-anchor-id="step-1-understand-and-normalize-the-data">Step 1: Understand and Normalize the Data</h4>
-<div id="f3b997fe" class="cell" data-execution_count="1">
+<div id="7ad01443" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scenario: Cleaning and matching product descriptions</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fuzzywuzzy <span class="im">import</span> fuzz</span>
@@ -242,8 +252,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Google Pixel 6 Pro 128GB - Stormy Black"</span>,</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pixel 6 Pro (128 GB) Stormy Black color"</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[1], line 3</span>
+<span class="ansi-green-fg ansi-bold">      1</span> <span style="font-style:italic;color:rgb(95,135,135)"># Scenario: Cleaning and matching product descriptions</span>
+<span class="ansi-green-fg ansi-bold">      2</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span> <span style="font-weight:bold;color:rgb(0,0,255)">re</span>
+<span class="ansi-green-fg">----&gt; 3</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span> <span style="font-weight:bold;color:rgb(0,0,255)">fuzzywuzzy</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span> fuzz
+<span class="ansi-green-fg ansi-bold">      5</span> <span style="font-style:italic;color:rgb(95,135,135)"># Sample data: Product descriptions</span>
+<span class="ansi-green-fg ansi-bold">      6</span> products <span style="color:rgb(98,98,98)">=</span> [
+<span class="ansi-green-fg ansi-bold">      7</span>     <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Samsung Galaxy S21 5G 128GB Smartphone (Unlocked)</span><span style="color:rgb(175,0,0)">"</span>,
+<span class="ansi-green-fg ansi-bold">      8</span>     <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Samsung Galaxy S21 Ultra 256GB 5G Phone</span><span style="color:rgb(175,0,0)">"</span>,
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-fg ansi-bold">     14</span>     <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Pixel 6 Pro (128 GB) Stormy Black color</span><span style="color:rgb(175,0,0)">"</span>
+<span class="ansi-green-fg ansi-bold">     15</span> ]
+
+<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named 'fuzzywuzzy'</pre>
 </div>
-<div id="a4963f9e" class="cell" data-execution_count="2">
+</div>
+</div>
+<div id="79474da3" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_product_text(text):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Clean and normalize product text for better matching"""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1: Convert to lowercase for case-insensitive comparison</span></span>
@@ -266,7 +295,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cd1174b7" class="cell" data-execution_count="3">
+<div id="b913cac4" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize all products</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>normalized_products <span class="op">=</span> [normalize_product_text(p) <span class="cf">for</span> p <span class="kw">in</span> products]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -274,102 +303,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> original, normalized <span class="kw">in</span> <span class="bu">zip</span>(products, normalized_products):</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Original: </span><span class="sc">{</span>original<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Normalized: </span><span class="sc">{</span>normalized<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Original vs. Normalized:
-Original: Samsung Galaxy S21 5G 128GB Smartphone (Unlocked)
-Normalized: samsung galaxy s21 5g 128gb
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[3], line 2</span>
+<span class="ansi-green-fg ansi-bold">      1</span> <span style="font-style:italic;color:rgb(95,135,135)"># Normalize all products</span>
+<span class="ansi-green-fg">----&gt; 2</span> normalized_products <span style="color:rgb(98,98,98)">=</span> [normalize_product_text(p) <span style="font-weight:bold;color:rgb(0,135,0)">for</span> p <span style="font-weight:bold;color:rgb(175,0,255)">in</span> <span class="ansi-yellow-bg">products</span>]
+<span class="ansi-green-fg ansi-bold">      4</span> <span style="color:rgb(0,135,0)">print</span>(<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Original vs. Normalized:</span><span style="color:rgb(175,0,0)">"</span>)
+<span class="ansi-green-fg ansi-bold">      5</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> original, normalized <span style="font-weight:bold;color:rgb(175,0,255)">in</span> <span style="color:rgb(0,135,0)">zip</span>(products, normalized_products):
 
-Original: Samsung Galaxy S21 Ultra 256GB 5G Phone
-Normalized: samsung galaxy s21 ultra 256gb 5g
-
-Original: Samsung S21 5G 128 GB
-Normalized: samsung s21 5g 128gb
-
-Original: iPhone 13 Pro Max 256GB - Graphite
-Normalized: iphone 13 pro max 256gb graphite
-
-Original: Apple iPhone 13 Pro Max (256 GB, Graphite)
-Normalized: apple iphone 13 pro max
-
-Original: iPhone13 Pro 256GB
-Normalized: iphone13 pro 256gb
-
-Original: Google Pixel 6 Pro 128GB - Stormy Black
-Normalized: google pixel 6 pro 128gb stormy black
-
-Original: Pixel 6 Pro (128 GB) Stormy Black color
-Normalized: pixel 6 pro stormy black
-</code></pre>
+<span class="ansi-red-fg">NameError</span>: name 'products' is not defined</pre>
+</div>
 </div>
 </div>
 </section>
 <section id="step-2-group-similar-products-using-fuzzy-matching" class="level4">
 <h4 class="anchored" data-anchor-id="step-2-group-similar-products-using-fuzzy-matching">Step 2: Group Similar Products Using Fuzzy Matching</h4>
-<div id="b15e05c7" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group similar products</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> group_similar_products(products, normalized_products, threshold<span class="op">=</span><span class="dv">80</span>):</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Group similar products based on fuzzy matching"""</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    groups <span class="op">=</span> []</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    used_indices <span class="op">=</span> <span class="bu">set</span>()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1: Iterate through each product</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, norm_p1 <span class="kw">in</span> <span class="bu">enumerate</span>(normalized_products):</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="kw">in</span> used_indices:</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 2: Start a new group with this product</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        group <span class="op">=</span> [products[i]]</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        used_indices.add(i)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 3: Find similar products by comparing with all others</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j, norm_p2 <span class="kw">in</span> <span class="bu">enumerate</span>(normalized_products):</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> j <span class="op">!=</span> i <span class="kw">and</span> j <span class="kw">not</span> <span class="kw">in</span> used_indices:</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Step 4: Use token_set_ratio to handle different word orders</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                <span class="co"># and partial matches (this is key for product description matching!)</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                similarity <span class="op">=</span> fuzz.token_set_ratio(norm_p1, norm_p2)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Step 5: If similarity exceeds our threshold, consider it a match</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> similarity <span class="op">&gt;=</span> threshold:</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>                    group.append(products[j])</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>                    used_indices.add(j)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 6: Add this group to our collection</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        groups.append(group)</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> groups</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="7dd40dfc" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group similar products</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> group_similar_products(products, normalized_products, threshold<span class="op">=</span><span class="dv">80</span>):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Group similar products based on fuzzy matching"""</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    groups <span class="op">=</span> []</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    used_indices <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1: Iterate through each product</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, norm_p1 <span class="kw">in</span> <span class="bu">enumerate</span>(normalized_products):</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="kw">in</span> used_indices:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 2: Start a new group with this product</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        group <span class="op">=</span> [products[i]]</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        used_indices.add(i)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 3: Find similar products by comparing with all others</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j, norm_p2 <span class="kw">in</span> <span class="bu">enumerate</span>(normalized_products):</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> j <span class="op">!=</span> i <span class="kw">and</span> j <span class="kw">not</span> <span class="kw">in</span> used_indices:</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Step 4: Use token_set_ratio to handle different word orders</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                <span class="co"># and partial matches (this is key for product description matching!)</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                similarity <span class="op">=</span> fuzz.token_set_ratio(norm_p1, norm_p2)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Step 5: If similarity exceeds our threshold, consider it a match</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> similarity <span class="op">&gt;=</span> threshold:</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                    group.append(products[j])</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                    used_indices.add(j)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 6: Add this group to our collection</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        groups.append(group)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> groups</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="ae90c8d6" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group similar products</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>similar_groups <span class="op">=</span> group_similar_products(products, normalized_products)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Similar Product Groups:"</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, group <span class="kw">in</span> <span class="bu">enumerate</span>(similar_groups, <span class="dv">1</span>):</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Group </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">:"</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> product <span class="kw">in</span> group:</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>product<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Similar Product Groups:
+<div id="e3f3c3af" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group similar products</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>similar_groups <span class="op">=</span> group_similar_products(products, normalized_products)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Similar Product Groups:"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, group <span class="kw">in</span> <span class="bu">enumerate</span>(similar_groups, <span class="dv">1</span>):</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Group </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> product <span class="kw">in</span> group:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>product<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[5], line 2</span>
+<span class="ansi-green-fg ansi-bold">      1</span> <span style="font-style:italic;color:rgb(95,135,135)"># Group similar products</span>
+<span class="ansi-green-fg">----&gt; 2</span> similar_groups <span style="color:rgb(98,98,98)">=</span> group_similar_products(<span class="ansi-yellow-bg">products</span>, normalized_products)
+<span class="ansi-green-fg ansi-bold">      4</span> <span style="color:rgb(0,135,0)">print</span>(<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Similar Product Groups:</span><span style="color:rgb(175,0,0)">"</span>)
+<span class="ansi-green-fg ansi-bold">      5</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> i, group <span style="font-weight:bold;color:rgb(175,0,255)">in</span> <span style="color:rgb(0,135,0)">enumerate</span>(similar_groups, <span style="color:rgb(98,98,98)">1</span>):
 
-Group 1:
-  - Samsung Galaxy S21 5G 128GB Smartphone (Unlocked)
-  - Samsung Galaxy S21 Ultra 256GB 5G Phone
-  - Samsung S21 5G 128 GB
-
-Group 2:
-  - iPhone 13 Pro Max 256GB - Graphite
-  - Apple iPhone 13 Pro Max (256 GB, Graphite)
-
-Group 3:
-  - iPhone13 Pro 256GB
-
-Group 4:
-  - Google Pixel 6 Pro 128GB - Stormy Black
-  - Pixel 6 Pro (128 GB) Stormy Black color</code></pre>
+<span class="ansi-red-fg">NameError</span>: name 'products' is not defined</pre>
+</div>
 </div>
 </div>
 </section>
 <section id="key-problem-solving-takeaways" class="level4">
-<h4 class="anchored" data-anchor-id="key-problem-solving-takeaways">Key Problem-Solving Takeaways:</h4>
+<h4 class="anchored" data-anchor-id="key-problem-solving-takeaways">Key Problem-Solving Takeaways</h4>
 <ol type="1">
 <li><strong>Break complex problems into steps</strong>: We separated normalization from grouping</li>
 <li><strong>Preprocess data before comparison</strong>: Normalization makes matching more effective</li>
